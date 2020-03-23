@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import styled from '@emotion/styled'
 import ToggleButton from './toggle-button'
+import SvgCheck from '../icons/check';
+import IconButton from './icon-button';
+import SvgCross from '../icons/cross';
 
 const TaskWrapper = styled.li`
   display: flex;
@@ -181,6 +184,14 @@ const FormSection = styled.div`
   flex-grow: 1;
 `
 
+const TaskActionsSection = styled.div`
+  display: flex;
+
+  .IconButton + .IconButton {
+    margin-left: 0.5rem;
+  }
+`
+
 const PriorityDot = ({ prority, onClick }) => {
   return (
     <PriorityDotWrapper onClick={onClick}>
@@ -257,10 +268,12 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
 
         {!editorIsOpen && (
           <>
-            <button style={{ margin: '0 1rem 0 auto' }} onClick={completeOnCLick}>
-              {task.completed ? 'Reopen' : 'Complete'}
-            </button>
-            <button onClick={deleteOnCLick}>delete</button>
+            <TaskActionsSection>
+
+              <IconButton icon={<SvgCheck />} onClick={completeOnCLick} isChecked={task.completed}/>
+              <IconButton icon={<SvgCross />} onClick={deleteOnCLick}/>
+
+            </TaskActionsSection>
           </>
         )}
       </TaskWrapper>
