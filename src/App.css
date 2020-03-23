@@ -17,7 +17,7 @@
   --accent: hsl(15, 100%, 44%);
   --border: hsla(0,0%,0%,0.1);
   --background: hsla(0,0%,100%,1);
-  --backdrop: hsla(15, 50%, 90%, 80%);
+  --backdrop: hsla(15, 20%, 90%, 80%);
 
   --text-l: 1.5rem;
 }

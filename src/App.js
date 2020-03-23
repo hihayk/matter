@@ -144,6 +144,9 @@ const TitleForm = styled.form`
 `
 
 const PriorityForm = styled.form`
+  display: flex;
+  min-height: 22px;
+  align-items: center;
   ${props => props.isVisible ? '' : `
     opacity: 0;
     position: absolute;
@@ -151,6 +154,70 @@ const PriorityForm = styled.form`
     width: 0;
     height: 0`
   };
+`
+
+const PrioritySliderWrapper = styled.div`
+  width: 100%;
+  max-width: 30rem;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: calc(100% - 18px);
+    height: 2px;
+    background-image: linear-gradient(90deg, #000, #000 90%, transparent 90%, transparent 100%);
+    background-size: 11.1111% 1px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 2px;
+    z-index: -1;
+  }
+`
+
+const PrioritySlider = styled.input`
+  -webkit-appearance: none;
+  width: 100%;
+  height: 22px;
+  border-radius: 0px;
+  background: none;
+  outline: none;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%; 
+    background: black;
+    cursor: pointer;
+    top: 3px;
+    position: relative;
+  }
+
+  &::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: black;
+    cursor: pointer;
+    top: 3px;
+    position: relative;
+  }
+
+  &:focus::-webkit-slider-thumb {
+    box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 0 4px var(--background);
+  }
+  &:focus::-moz-range-thumb {
+    box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 0 4px var(--background);
+  }
+`
+
+const FormSection = styled.div`
+  flex-grow: 1;
 `
 
 const PriorityDot = ({ prority, onClick }) => {
@@ -269,34 +336,38 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
         </PriorityDotSection>
         <TitleSection>
 
-        {!titleEditorIsOpen && !priorityEditorIsOpen && (
-          <Title onClick={() => handleTitleClick()}>
-            {task.title}
-          </Title>
-        )}
-        
-        <TitleForm isVisible={titleEditorIsOpen && !priorityEditorIsOpen}>
-          <TitleInput
-            value={task.title}
-            onChange={titleInputOnChange}
-            ref={titleInput}
-          />
-          <button onClick={() => closeAllEditors(false)}>Done</button>
-        </TitleForm>
-        
+          {!titleEditorIsOpen && !priorityEditorIsOpen && (
+            <Title onClick={() => handleTitleClick()}>
+              {task.title}
+            </Title>
+          )}
+          
         </TitleSection>
 
-        <PriorityForm isVisible={priorityEditorIsOpen}>
-          <input
-            type="range"
-            min={1}
-            max={10}
-            value={task.prority}
-            onChange={priorityInputOnChange}
-            ref={priorityInput}
-          />
-          <button onClick={() => closeAllEditors(false)}>Done</button>
-        </PriorityForm>
+        <FormSection>
+          <TitleForm isVisible={titleEditorIsOpen && !priorityEditorIsOpen}>
+            <TitleInput
+              value={task.title}
+              onChange={titleInputOnChange}
+              ref={titleInput}
+            />
+            <button onClick={() => closeAllEditors(false)}>Done</button>
+          </TitleForm>
+
+          <PriorityForm isVisible={priorityEditorIsOpen}>
+            <PrioritySliderWrapper>
+              <PrioritySlider
+                type="range"
+                min={1}
+                max={10}
+                value={task.prority}
+                onChange={priorityInputOnChange}
+                ref={priorityInput}
+              />
+            </PrioritySliderWrapper>
+            <button onClick={() => closeAllEditors(false)}>Done</button>
+          </PriorityForm>
+        </FormSection>
 
         <button style={{ margin: '0 1rem 0 auto' }} onClick={completeOnCLick}>
           {task.completed ? 'Reopen' : 'Complete'}
