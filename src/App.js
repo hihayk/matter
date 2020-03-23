@@ -139,7 +139,7 @@ const TitleInput = styled.input`
   }
 `
 
-const TitleForm = styled.form`
+const TitleForm = styled.div`
   display: flex;
   align-items: center;
   ${props => props.isVisible ? '' : `
@@ -151,7 +151,7 @@ const TitleForm = styled.form`
   };
 `
 
-const PriorityForm = styled.form`
+const PriorityForm = styled.div`
   display: flex;
   min-height: 22px;
   align-items: center;
@@ -246,72 +246,84 @@ const exampleTasks = [
     title: 'Buy tool to change pedals',
     prority: 4,
     completed: false,
+    dateAdded: new Date('11/14/2019 00:01'),
   },
   {
     id: 2,
     title: 'Wash the bike',
     prority: 2,
     completed: false,
+    dateAdded: new Date('11/14/2013 00:02'),
   },
   {
     id: 3,
     title: 'Get reel tape',
     prority: 10,
     completed: true,
+    dateAdded: new Date('11/14/2013 00:03'),
   },
   {
     id: 4,
     title: 'Buy center table',
     prority: 1,
     completed: true,
+    dateAdded: new Date('11/14/2018 00:04'),
   },
   {
     id: 5,
     title: 'Wash the bike',
     prority: 7,
     completed: false,
+    dateAdded: new Date('11/14/2013 00:05'),
   },
   {
     id: 6,
     title: 'Get reel tape',
     prority: 3,
     completed: true,
+    dateAdded: new Date('11/14/2013 00:06'),
   },
   {
     id: 7,
     title: 'Buy center table',
     prority: 1,
     completed: true,
+    dateAdded: new Date('11/14/2013 00:07'),
   },
   {
     id: 8,
     title: 'Get reel tape',
     prority: 8,
     completed: true,
+    dateAdded: new Date('11/14/2013 00:08'),
   },
   {
     id: 9,
     title: 'Buy center table',
     prority: 1,
     completed: true,
+    dateAdded: new Date('11/14/2013 00:09'),
   },
   {
     id: 10,
     title: 'Wash the bike',
     prority: 6,
     completed: false,
+    dateAdded: new Date('11/14/2013 00:10'),
   },
   {
     id: 11,
     title: 'Get reel tape',
     prority: 3,
     completed: true,
+    dateAdded: new Date('11/14/2013 00:11'),
   },
   {
     id: 12,
     title: 'Buy center table',
     prority: 1,
     completed: true,
+    dateAdded: new Date('11/14/2013 00:12'),
   },
 ]
 
@@ -401,8 +413,9 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
 
 function App() {
   const [tasks, setTasks] = useLocalStorage('tasks', exampleTasks)
+  const [darkModeOn, setDarkModeOn] = useLocalStorage('darkModeOn', false)
   const [statusFilter, setStatusFilter] = useState('pending')
-  const [darkModeOn, setDarkModeOn] = useState(true)
+  const [order, setOrder] = useLocalStorage('order', 'dateAdded')
 
   if(darkModeOn) {
     document.body.classList.add('dark')
@@ -475,6 +488,7 @@ function App() {
         title: 'This is a new task',
         prority: 1,
         completed: false,
+        dateAdded: new Date(),
       }
     )
 
@@ -485,14 +499,27 @@ function App() {
     return result
   }
 
-  const filteredTasks =
-    statusFilter === 'pending'
-      ? tasks.filter(task => task.completed === false)
-      : tasks.filter(task => task.completed === true)
+  const getFilteredTasks = () => {
+    let result = []
+
+    if (order === 'highestPriority') {
+      result = tasks.sort((a, b) => b.prority - a.prority)
+    }
+    if (order === 'dateAdded') {
+      result = tasks.sort((a, b) => b.dateAdded - a.dateAdded)
+    }
+    if(statusFilter === 'pending') {
+      result = result.filter(task => task.completed === true)
+    }
+    if(statusFilter === 'completed') {
+      result = result.filter(task => task.completed === false)
+    }
+
+    return result
+  }
   
   const pendingAmount = tasks.filter(task => task.completed === false).length
   const completedAmount = tasks.filter(task => task.completed === true).length
-
   
   return (
     <GlobalContainer>
@@ -511,8 +538,8 @@ function App() {
           </ToggleButtonGroup>
           
           <ToggleButtonGroup>
-            <ToggleButton isChecked className="ToggleButton">Highest Priority</ToggleButton>
-            <ToggleButton className="ToggleButton">Date added</ToggleButton>
+            <ToggleButton isChecked={order === 'highestPriority'} onClick={() => setOrder('highestPriority')} className="ToggleButton">Highest Priority</ToggleButton>
+            <ToggleButton isChecked={order === 'dateAdded'} onClick={() => setOrder('dateAdded')} className="ToggleButton">Date added</ToggleButton>
           </ToggleButtonGroup>
           
           <ToggleButtonGroup>
@@ -527,7 +554,7 @@ function App() {
           New task
         </button>
 
-        {filteredTasks.map((task, index) => {
+        {getFilteredTasks().map((task, index) => {
 
           return (
             <Task
