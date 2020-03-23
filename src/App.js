@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './App.css';
 import styled from '@emotion/styled'
 import useLocalStorage from './useLocalStorage'
@@ -46,7 +46,7 @@ const TaskBackdrop = styled.div`
   height: 100%;
   width: 100%;
   position: fixed;
-  background: hsla(0,0%,95%,0.8);
+  background: var(--backdrop);
   top: 0;
   left: 0;
   z-index: 10;
@@ -60,17 +60,28 @@ const Title = styled.button`
   font-size: var(--text-l);
   color: inherit;
   border: none;
-  cursor: pointer;
+  cursor: text;
 `
 
 const PriorityDotWrapper = styled.button`
+  width: var(--maxDotSize);
+  height: var(--maxDotSize);
+  border-radius: 100%;
+  background-color: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Dot = styled.div`
   width: var(--dotSize);
   height: var(--dotSize);
   border-radius: 100%;
   background-color: var(--accent);
-  border: none;
   cursor: pointer;
-  padding: 0;
 `
 
 const PriorityDotSection = styled.div`
@@ -109,9 +120,44 @@ const ToggleButtonGroup = styled.div`
   }
 `
 
+const TitleInput = styled.input`
+  font: inherit;
+  font-size: var(--text-l);
+  color: inherit;
+  border: none;
+  padding: 0;
+  /* margin-left: calc(0.5rem * -1 - 1px); */
+
+  &:focus {
+    outline: none;
+  }
+`
+
+const TitleForm = styled.form`
+  ${props => props.isVisible ? '' : `
+    opacity: 0;
+    position: absolute;
+    left: -100vw;
+    width: 0;
+    height: 0`
+  };
+`
+
+const PriorityForm = styled.form`
+  ${props => props.isVisible ? '' : `
+    opacity: 0;
+    position: absolute;
+    left: -100vw;
+    width: 0;
+    height: 0`
+  };
+`
+
 const PriorityDot = ({ prority, onClick }) => {
   return (
-    <PriorityDotWrapper prority={prority} style={{ '--dotSize' : `${prority / 2}rem` }} onClick={onClick}/>
+    <PriorityDotWrapper onClick={onClick}>
+      <Dot prority={prority} style={{ '--dotSize' : `${prority / 2}rem` }}/>
+    </PriorityDotWrapper>
   )
 }
 
@@ -201,51 +247,63 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
     setPriorityEditorIsOpen(false)
   }
 
+  const titleInput = useRef(null);
+  const priorityInput = useRef(null);
+
+  const handleTitleClick = () => {
+    setTitleEditorIsOpen(true)
+    titleInput.current.select();
+  }
+  
+  const handlePriorityClick = () => {
+    setPriorityEditorIsOpen(true)
+    priorityInput.current.focus();
+  }
+
   return (
     <>
       <TaskWrapper editorIsOpen={editorIsOpen}>
         
         <PriorityDotSection>
-          <PriorityDot prority={task.prority} onClick={() => setPriorityEditorIsOpen(true)}/>
+          <PriorityDot prority={task.prority} onClick={() => handlePriorityClick()}/>
         </PriorityDotSection>
         <TitleSection>
-          
 
         {!titleEditorIsOpen && !priorityEditorIsOpen && (
-          <Title onClick={() => setTitleEditorIsOpen(true)}>
+          <Title onClick={() => handleTitleClick()}>
             {task.title}
           </Title>
         )}
         
-        {titleEditorIsOpen && (
-          <div>
-            <input
-              value={task.title}
-              onChange={titleInputOnChange}
-            />
-            <button onClick={() => setTitleEditorIsOpen(false)}>Done</button>
-          </div>
-        )}
+        <TitleForm isVisible={titleEditorIsOpen && !priorityEditorIsOpen}>
+          <TitleInput
+            value={task.title}
+            onChange={titleInputOnChange}
+            ref={titleInput}
+          />
+          <button onClick={() => closeAllEditors(false)}>Done</button>
+        </TitleForm>
+        
         </TitleSection>
 
-        {priorityEditorIsOpen && (
-          <div>
-            <input
-              type="range"
-              min={1}
-              max={10}
-              value={task.prority}
-              onChange={priorityInputOnChange}
-            />
-            <button onClick={() => setPriorityEditorIsOpen(false)}>Done</button>
-          </div>
-        )}
+        <PriorityForm isVisible={priorityEditorIsOpen}>
+          <input
+            type="range"
+            min={1}
+            max={10}
+            value={task.prority}
+            onChange={priorityInputOnChange}
+            ref={priorityInput}
+          />
+          <button onClick={() => closeAllEditors(false)}>Done</button>
+        </PriorityForm>
 
         <button style={{ margin: '0 1rem 0 auto' }} onClick={completeOnCLick}>
           {task.completed ? 'Reopen' : 'Complete'}
         </button>
         <button onClick={deleteOnCLick}>delete</button>
       </TaskWrapper>
+
       {editorIsOpen && (
         <TaskBackdrop onClick={() => closeAllEditors()}/>
       )}
