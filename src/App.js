@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import styled from '@emotion/styled'
 import useLocalStorage from './useLocalStorage'
@@ -13,6 +13,7 @@ const MainHeader = styled.header`
   background-color: var(--background);
   position: sticky;
   top: 0;
+  z-index: 1;
 `
 
 const MainHeaderContent = styled.div`
@@ -33,19 +34,21 @@ const TaskWrapper = styled.li`
   align-items: center;
   min-height: calc(var(--maxDotSize) + 1rem);
   border-bottom: 1px solid var(--border);
+  position: relative;
 `
 
 const TitleSection = styled.div`
-  padding-left: 2rem;
   font-size: var(--text-l);
 `
 
-const PriorityDotWrapper = styled.div`
-  border: 1px solid red;
+const PriorityDotWrapper = styled.button`
   width: var(--dotSize);
   height: var(--dotSize);
   border-radius: 100%;
   background-color: var(--accent);
+  border: none;
+  cursor: pointer;
+  padding: 0;
 `
 
 const PriorityDotSection = styled.div`
@@ -55,6 +58,8 @@ const PriorityDotSection = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  position: absolute;
+  left: calc(var(--maxDotSize) * -1 - 1rem);
 `
 
 const ToggleButton = styled.button`
@@ -63,7 +68,13 @@ const ToggleButton = styled.button`
   padding: 0.5rem 0.75rem;
   border: none;
   background: none;
+  cursor: pointer;
   box-shadow: inset 0 0 0 ${props => props.isChecked ? '2px black' : '1px #aaa'};
+
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 ${props => props.isChecked ? '2px var(--accent)' : '1px var(--accent)'};
+  }
 `
 
 const ToggleButtonGroup = styled.div`
@@ -86,7 +97,6 @@ const exampleTasks = [
   {
     id: 1,
     title: 'Buy tool to change pedals',
-    added: 'Buy tool to change pedals',
     prority: 4,
     completed: false,
   },
@@ -159,7 +169,8 @@ const exampleTasks = [
 ]
 
 function App() {
-  const [tasks, setTasks] = useLocalStorage('tasks', exampleTasks);
+  const [tasks, setTasks] = useLocalStorage('tasks', exampleTasks)
+  const [statusFilter, setStatusFilter] = useState('pending')
 
   const makeEditedTitle = (editedId, newTitle) => {
     let result = []
@@ -189,7 +200,21 @@ function App() {
     return result
   }
   
-  const makeTasksWithoutDeleted = (editedId) => {
+  const toggleCompleteTask = (editedId) => {
+    let result = []
+
+    tasks.map((task) => {
+      if(editedId === task.id) {
+        task.completed = !task.completed
+      }
+
+      return result.push(task)
+    })
+
+    return result
+  }
+  
+  const deleteTask = (editedId) => {
     return tasks.filter(task => task.id !== editedId)
   }
 
@@ -200,7 +225,7 @@ function App() {
       return result.push(task.id)
     })
 
-    return Math.max(...result)
+    return result.length > 0 ? Math.max(...result) : 0
   }
 
   const addTask = () => {
@@ -210,7 +235,7 @@ function App() {
       {
         id: getHighestId() + 1,
         title: 'This is a new task',
-        prority: 4,
+        prority: 1,
         completed: false,
       }
     )
@@ -222,25 +247,19 @@ function App() {
     return result
   }
 
-  // const getTaskById = (id) => {
-  //   let result = {}
+  const filteredTasks =
+    statusFilter === 'pending'
+      ? tasks.filter(task => task.completed === false)
+      : tasks.filter(task => task.completed === true)
 
-  //   tasks.map((task) => {
-  //     if(id === task.id) {
-  //       result = task
-  //     }
-  //   })
-
-  //   return result
-  // }
   
   return (
     <GlobalContainer>
       <MainHeader>
         <MainHeaderContent>
           <ToggleButtonGroup className="statusButtons">
-            <ToggleButton isChecked className="ToggleButton">Pending</ToggleButton>
-            <ToggleButton className="ToggleButton">Done</ToggleButton>
+            <ToggleButton isChecked={statusFilter === 'pending'} className="ToggleButton" onClick={() => setStatusFilter('pending')}>Pending</ToggleButton>
+            <ToggleButton isChecked={statusFilter === 'completed'} className="ToggleButton" onClick={() => setStatusFilter('completed')}>Completed</ToggleButton>
           </ToggleButtonGroup>
           
           <ToggleButtonGroup>
@@ -255,7 +274,7 @@ function App() {
           New task
         </button>
 
-        {tasks.map((task, index) => {
+        {filteredTasks.map((task, index) => {
 
           return (
             <TaskWrapper key={index}>
@@ -275,8 +294,11 @@ function App() {
                 value={task.prority}
                 onChange={e => setTasks(makeEditedPriority(task.id, e.target.value))}
               />
-              
-              <button onClick={() => setTasks(makeTasksWithoutDeleted(task.id))}>delete</button>
+
+              <button style={{ margin: '0 1rem 0 auto' }} onClick={() => setTasks(toggleCompleteTask(task.id))}>
+                {task.completed ? 'Reopen' : 'Complete'}
+              </button>
+              <button onClick={() => setTasks(deleteTask(task.id))}>delete</button>
 
             </TaskWrapper>
           )
