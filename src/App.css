@@ -14,7 +14,8 @@
   --accentLight: hsl(15, 100%, 90%);
   --accentXLight: hsl(15, 100%, 95%);
 
-  --dimmed: hsla(0,0%,0%,0.6);
+  --dimmed: hsla(0,0%,0%,0.4);
+  --xDimmed: hsla(0,0%,0%,0.2);
   --border: hsla(0,0%,0%,0.1);
   --background: hsla(0,0%,100%,1);
   --body: hsla(0,0%,0%,1);
@@ -31,7 +32,8 @@ body.dark {
   --background: hsla(0,0%,10%,1);
   --body: hsla(0,0%,100%,1);
   --backdrop: hsla(15, 0%, 0%, 80%);
-  --dimmed: hsla(0,0%,100%,0.6);
+  --dimmed: hsla(0, 0%, 100%, 0.5);
+  --xDimmed: hsla(0, 0%, 100%, 0.2);
   --border: hsla(0,0%,0%,0.8);
   --selectionColor: var(--body);
   --selectionBackground: var(--accentXLight);

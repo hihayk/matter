@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import './App.css';
 import styled from '@emotion/styled'
 import useLocalStorage from './useLocalStorage'
-import Button from './components/button'
+import ToggleButton, { ToggleButtonGroup, ToggleButtonOption } from './components/toggle-button'
 
 const GlobalContainer = styled.div`
   --dotSize: 5rem;
@@ -37,6 +37,7 @@ const TaskWrapper = styled.li`
   border-bottom: 1px solid var(--border);
   position: relative;
   background-color: var(--background);
+  ${props => props.isVisible && 'display: none'};
   ${props => props.editorIsOpen ? 'z-index: 11' : 'z-index: 0'};
   ${props => props.editorIsOpen && `
     box-shadow: calc(50rem * -1 + 1rem*2) 0 var(--background), calc(50rem - 1rem*2) 0 var(--background);
@@ -97,31 +98,6 @@ const PriorityDotSection = styled.div`
   flex-shrink: 0;
   position: absolute;
   left: calc(var(--maxDotSize) * -1 - 1rem);
-`
-
-const ToggleButton = styled.button`
-  font: inherit;
-  color: inherit;
-  padding: 0.5rem 0.75rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-  box-shadow: inset 0 0 0 ${props => props.isChecked ? '2px var(--body)' : '1px #aaa'};
-
-  &:focus {
-    outline: none;
-    box-shadow: inset 0 0 0 ${props => props.isChecked ? '2px var(--accent)' : '1px var(--accent)'};
-  }
-`
-
-const ToggleButtonGroup = styled.div`
-  & .ToggleButton + .ToggleButton {
-    margin-left: 0.25rem;
-  }
-
-  &.statusButtons {
-    margin-right: 4rem;
-  }
 `
 
 const TitleInput = styled.input`
@@ -197,6 +173,7 @@ const PrioritySlider = styled.input`
   border-radius: 0px;
   background: none;
   outline: none;
+  cursor: pointer;
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -327,7 +304,7 @@ const exampleTasks = [
   },
 ]
 
-const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick, deleteOnCLick }) => {
+const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick, deleteOnCLick, isVisible }) => {
   const [titleEditorIsOpen, setTitleEditorIsOpen] = useState(false)
   const [priorityEditorIsOpen, setPriorityEditorIsOpen] = useState(false)
 
@@ -353,7 +330,7 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
 
   return (
     <>
-      <TaskWrapper editorIsOpen={editorIsOpen}>
+      <TaskWrapper editorIsOpen={editorIsOpen} isVisible={isVisible}>
         
         <PriorityDotSection>
           <PriorityDot prority={task.prority} onClick={() => handlePriorityClick()}/>
@@ -410,11 +387,54 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
   )
 }
 
+const TaskList = ({
+  tasks,
+  setTasks,
+  makeEditedTitle,
+  makeEditedPriority,
+  toggleCompleteTask,
+  deleteTask,
+  taskCompleted,
+  order,
+}) => {
+  
+  const highestPriorityTasks = () => {
+    const priorityTasksArray = [...tasks]
+    return priorityTasksArray.sort((a, b) => b.prority - a.prority)
+  }
+  
+  const dateAddedTasks = () => {
+    const dateAddedTasksArray = [...tasks]
+    return dateAddedTasksArray.sort((a, b) => b.dateAdded - a.dateAdded)
+  }
+
+  const sortedTasks = () => order === 'highestPriority' ? highestPriorityTasks() : dateAddedTasks()
+
+
+  return (
+    <>
+      {sortedTasks().map((task, index) => {
+        return (
+          <Task
+            isVisible={task.completed === taskCompleted}
+            task={task}
+            key={index}
+            titleInputOnChange={e => setTasks(makeEditedTitle(task.id, e.target.value))}
+            priorityInputOnChange={e => setTasks(makeEditedPriority(task.id, e.target.value))}
+            completeOnCLick={() => setTasks(toggleCompleteTask(task.id))}
+            deleteOnCLick={() => setTasks(deleteTask(task.id))}
+          />
+        )
+      })}
+    </>
+  )
+}
+
 
 function App() {
   const [tasks, setTasks] = useLocalStorage('tasks', exampleTasks)
   const [darkModeOn, setDarkModeOn] = useLocalStorage('darkModeOn', false)
-  const [statusFilter, setStatusFilter] = useState('pending')
+  const [taskCompleted, setTaskCompleted] = useState(true)
   const [order, setOrder] = useLocalStorage('order', 'dateAdded')
 
   if(darkModeOn) {
@@ -499,25 +519,6 @@ function App() {
     return result
   }
 
-  const getFilteredTasks = () => {
-    let result = []
-
-    if (order === 'highestPriority') {
-      result = tasks.sort((a, b) => b.prority - a.prority)
-    }
-    if (order === 'dateAdded') {
-      result = tasks.sort((a, b) => b.dateAdded - a.dateAdded)
-    }
-    if(statusFilter === 'pending') {
-      result = result.filter(task => task.completed === true)
-    }
-    if(statusFilter === 'completed') {
-      result = result.filter(task => task.completed === false)
-    }
-
-    return result
-  }
-  
   const pendingAmount = tasks.filter(task => task.completed === false).length
   const completedAmount = tasks.filter(task => task.completed === true).length
   
@@ -525,48 +526,64 @@ function App() {
     <GlobalContainer>
       <MainHeader>
         <MainHeaderContent>
-          <ToggleButtonGroup className="statusButtons">
+          <ToggleButtonGroup className="headerButtons">
             <ToggleButton
-              isChecked={statusFilter === 'pending'}
+              onClick={() => setTaskCompleted(!taskCompleted)}
               className="ToggleButton"
-              onClick={() => setStatusFilter('pending')}
             >
-              Pending
-              <span style={{ color: 'var(--dimmed)' }}> {pendingAmount}</span>
+              <ToggleButtonOption isActive={taskCompleted} className="ToggleButtonOption">Pending <span style={{ color: 'var(--dimmed)' }}>{pendingAmount}</span></ToggleButtonOption>
+              <ToggleButtonOption isActive={!taskCompleted} className="ToggleButtonOption">Completed <span style={{ color: 'var(--dimmed)' }}>{completedAmount}</span></ToggleButtonOption>
             </ToggleButton>
-            <ToggleButton isChecked={statusFilter === 'completed'} className="ToggleButton" onClick={() => setStatusFilter('completed')}>Completed <span style={{ color: 'var(--dimmed)' }}>{completedAmount}</span></ToggleButton>
+          </ToggleButtonGroup>
+          
+          <ToggleButtonGroup className="headerButtons">
+            <ToggleButton onClick={() => setOrder(order === 'highestPriority' ? 'dateAdded' : 'highestPriority')} className="ToggleButton">
+              <ToggleButtonOption isActive={order === 'highestPriority'} className="ToggleButtonOption">Highest Priority</ToggleButtonOption>
+              <ToggleButtonOption isActive={order === 'dateAdded'} className="ToggleButtonOption">Latest</ToggleButtonOption>
+            </ToggleButton>
           </ToggleButtonGroup>
           
           <ToggleButtonGroup>
-            <ToggleButton isChecked={order === 'highestPriority'} onClick={() => setOrder('highestPriority')} className="ToggleButton">Highest Priority</ToggleButton>
-            <ToggleButton isChecked={order === 'dateAdded'} onClick={() => setOrder('dateAdded')} className="ToggleButton">Date added</ToggleButton>
-          </ToggleButtonGroup>
-          
-          <ToggleButtonGroup>
-            <ToggleButton isChecked={!darkModeOn} onClick={() => setDarkModeOn(false)} className="ToggleButton">L</ToggleButton>
-            <ToggleButton isChecked={darkModeOn} onClick={() => setDarkModeOn(true)} className="ToggleButton">D</ToggleButton>
+            <ToggleButton onClick={() => setDarkModeOn(!darkModeOn)} className="ToggleButton">
+              <ToggleButtonOption isActive={!darkModeOn} className="ToggleButtonOption">Light</ToggleButtonOption>
+              <ToggleButtonOption isActive={darkModeOn} className="ToggleButtonOption">Dark</ToggleButtonOption>
+            </ToggleButton>
           </ToggleButtonGroup>
         </MainHeaderContent>
       </MainHeader>
-      <TaskListContainer>
+      <TaskListContainer key={order}>
 
         <button onClick={() => setTasks(addTask())}>
           New task
         </button>
+        <button onClick={() => localStorage.clear()}>
+          Clear localStorage
+        </button>
 
-        {getFilteredTasks().map((task, index) => {
-
-          return (
-            <Task
-              task={task}
-              key={index}
-              titleInputOnChange={e => setTasks(makeEditedTitle(task.id, e.target.value))}
-              priorityInputOnChange={e => setTasks(makeEditedPriority(task.id, e.target.value))}
-              completeOnCLick={() => setTasks(toggleCompleteTask(task.id))}
-              deleteOnCLick={() => setTasks(deleteTask(task.id))}              
-            />
-          )
-        })}
+        {order === 'highestPriority' ? (
+          <TaskList
+            tasks={tasks}
+            order={order}
+            setTasks={setTasks}
+            makeEditedTitle={makeEditedTitle}
+            makeEditedPriority={makeEditedPriority}
+            toggleCompleteTask={toggleCompleteTask}
+            deleteTask={deleteTask}
+            taskCompleted={taskCompleted}
+          />
+        ) : (
+          <TaskList
+            tasks={tasks}
+            order={order}
+            setTasks={setTasks}
+            makeEditedTitle={makeEditedTitle}
+            makeEditedPriority={makeEditedPriority}
+            toggleCompleteTask={toggleCompleteTask}
+            deleteTask={deleteTask}
+            taskCompleted={taskCompleted}
+          />
+        )}
+        
       </TaskListContainer>
     </GlobalContainer>
   );
