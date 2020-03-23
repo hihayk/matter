@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import './App.css';
 import styled from '@emotion/styled'
 import useLocalStorage from './useLocalStorage'
+import Button from './components/button'
 
 const GlobalContainer = styled.div`
   --dotSize: 5rem;
@@ -25,14 +26,14 @@ const MainHeaderContent = styled.div`
 
 const TaskListContainer = styled.ul`
   max-width: 50rem;
-  padding: 0 1rem;
+  padding: 0 1rem 8rem 1rem;
   margin: 0 auto;
 `
 
 const TaskWrapper = styled.li`
   display: flex;
   align-items: center;
-  min-height: calc(var(--maxDotSize) + 1rem);
+  min-height: calc(var(--maxDotSize) + 0.5rem);
   border-bottom: 1px solid var(--border);
   position: relative;
   background-color: var(--background);
@@ -57,17 +58,20 @@ const TitleSection = styled.div`
 
 const Title = styled.button`
   font: inherit;
-  font-size: var(--text-l);
+  font-size: var(--text-xl);
   color: inherit;
   border: none;
   cursor: text;
+  padding: 0;
+  font-family: Marr Sans Web;
+  background-color: transparent;
 `
 
 const PriorityDotWrapper = styled.button`
   width: var(--maxDotSize);
   height: var(--maxDotSize);
   border-radius: 100%;
-  background-color: none;
+  background-color: transparent;
   border: none;
   cursor: pointer;
   padding: 0;
@@ -102,7 +106,7 @@ const ToggleButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-  box-shadow: inset 0 0 0 ${props => props.isChecked ? '2px black' : '1px #aaa'};
+  box-shadow: inset 0 0 0 ${props => props.isChecked ? '2px var(--body)' : '1px #aaa'};
 
   &:focus {
     outline: none;
@@ -122,11 +126,13 @@ const ToggleButtonGroup = styled.div`
 
 const TitleInput = styled.input`
   font: inherit;
-  font-size: var(--text-l);
+  font-size: var(--text-xl);
   color: inherit;
   border: none;
-  padding: 0;
-  /* margin-left: calc(0.5rem * -1 - 1px); */
+  padding: 1px 0 0 0;
+  flex-grow: 1;
+  font-family: Marr Sans Web;
+  background-color: transparent;
 
   &:focus {
     outline: none;
@@ -134,6 +140,8 @@ const TitleInput = styled.input`
 `
 
 const TitleForm = styled.form`
+  display: flex;
+  align-items: center;
   ${props => props.isVisible ? '' : `
     opacity: 0;
     position: absolute;
@@ -154,6 +162,10 @@ const PriorityForm = styled.form`
     width: 0;
     height: 0`
   };
+
+  .ToggleButton {
+    margin-left: auto;
+  }
 `
 
 const PrioritySliderWrapper = styled.div`
@@ -166,7 +178,7 @@ const PrioritySliderWrapper = styled.div`
     position: absolute;
     width: calc(100% - 18px);
     height: 2px;
-    background-image: linear-gradient(90deg, #000, #000 90%, transparent 90%, transparent 100%);
+    background-image: linear-gradient(90deg, var(--body), var(--body) 90%, transparent 90%, transparent 100%);
     background-size: 11.1111% 1px;
     top: 0;
     bottom: 0;
@@ -192,7 +204,7 @@ const PrioritySlider = styled.input`
     width: 22px;
     height: 22px;
     border-radius: 50%; 
-    background: black;
+    background: var(--body);
     cursor: pointer;
     top: 3px;
     position: relative;
@@ -202,7 +214,7 @@ const PrioritySlider = styled.input`
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: black;
+    background: var(--body);
     cursor: pointer;
     top: 3px;
     position: relative;
@@ -351,7 +363,7 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
               onChange={titleInputOnChange}
               ref={titleInput}
             />
-            <button onClick={() => closeAllEditors(false)}>Done</button>
+            <ToggleButton onClick={() => closeAllEditors(false)}>Done</ToggleButton>
           </TitleForm>
 
           <PriorityForm isVisible={priorityEditorIsOpen}>
@@ -365,14 +377,18 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
                 ref={priorityInput}
               />
             </PrioritySliderWrapper>
-            <button onClick={() => closeAllEditors(false)}>Done</button>
+            <ToggleButton className="ToggleButton" onClick={() => closeAllEditors(false)}>Done</ToggleButton>
           </PriorityForm>
         </FormSection>
 
-        <button style={{ margin: '0 1rem 0 auto' }} onClick={completeOnCLick}>
-          {task.completed ? 'Reopen' : 'Complete'}
-        </button>
-        <button onClick={deleteOnCLick}>delete</button>
+        {!editorIsOpen && (
+          <>
+            <button style={{ margin: '0 1rem 0 auto' }} onClick={completeOnCLick}>
+              {task.completed ? 'Reopen' : 'Complete'}
+            </button>
+            <button onClick={deleteOnCLick}>delete</button>
+          </>
+        )}
       </TaskWrapper>
 
       {editorIsOpen && (
@@ -386,6 +402,13 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
 function App() {
   const [tasks, setTasks] = useLocalStorage('tasks', exampleTasks)
   const [statusFilter, setStatusFilter] = useState('pending')
+  const [darkModeOn, setDarkModeOn] = useState(true)
+
+  if(darkModeOn) {
+    document.body.classList.add('dark')
+  } else {
+    document.body.classList.remove('dark')
+  }
 
   const makeEditedTitle = (editedId, newTitle) => {
     let result = []
@@ -466,6 +489,9 @@ function App() {
     statusFilter === 'pending'
       ? tasks.filter(task => task.completed === false)
       : tasks.filter(task => task.completed === true)
+  
+  const pendingAmount = tasks.filter(task => task.completed === false).length
+  const completedAmount = tasks.filter(task => task.completed === true).length
 
   
   return (
@@ -473,13 +499,25 @@ function App() {
       <MainHeader>
         <MainHeaderContent>
           <ToggleButtonGroup className="statusButtons">
-            <ToggleButton isChecked={statusFilter === 'pending'} className="ToggleButton" onClick={() => setStatusFilter('pending')}>Pending</ToggleButton>
-            <ToggleButton isChecked={statusFilter === 'completed'} className="ToggleButton" onClick={() => setStatusFilter('completed')}>Completed</ToggleButton>
+            <ToggleButton
+              isChecked={statusFilter === 'pending'}
+              className="ToggleButton"
+              onClick={() => setStatusFilter('pending')}
+            >
+              Pending
+              <span style={{ color: 'var(--dimmed)' }}> {pendingAmount}</span>
+            </ToggleButton>
+            <ToggleButton isChecked={statusFilter === 'completed'} className="ToggleButton" onClick={() => setStatusFilter('completed')}>Completed <span style={{ color: 'var(--dimmed)' }}>{completedAmount}</span></ToggleButton>
           </ToggleButtonGroup>
           
           <ToggleButtonGroup>
             <ToggleButton isChecked className="ToggleButton">Highest Priority</ToggleButton>
             <ToggleButton className="ToggleButton">Date added</ToggleButton>
+          </ToggleButtonGroup>
+          
+          <ToggleButtonGroup>
+            <ToggleButton isChecked={!darkModeOn} onClick={() => setDarkModeOn(false)} className="ToggleButton">L</ToggleButton>
+            <ToggleButton isChecked={darkModeOn} onClick={() => setDarkModeOn(true)} className="ToggleButton">D</ToggleButton>
           </ToggleButtonGroup>
         </MainHeaderContent>
       </MainHeader>

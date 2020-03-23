@@ -1,10 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+
 *, *:before, *:after {
   box-sizing: border-box;
-}
-
-::selection {
-  background-color: var(--accentLight);
-  color: var(--accent);
 }
 
 * {
@@ -13,16 +10,41 @@
 }
 
 :root {
-  --accentLight: hsl(15, 100%, 90%);
   --accent: hsl(15, 100%, 44%);
+  --accentLight: hsl(15, 100%, 90%);
+  --accentXLight: hsl(15, 100%, 95%);
+
+  --dimmed: hsla(0,0%,0%,0.6);
   --border: hsla(0,0%,0%,0.1);
   --background: hsla(0,0%,100%,1);
-  --backdrop: hsla(15, 20%, 90%, 80%);
+  --body: hsla(0,0%,0%,1);
+  --backdrop: hsla(15, 10%, 90%, 80%);
+  
+  --text-xl: 2rem;
+  --text-l: 1rem;
+  
+  --selectionColor: var(--accent);
+  --selectionBackground: var(--accentLight);
+}
 
-  --text-l: 1.5rem;
+body.dark {
+  --background: hsla(0,0%,10%,1);
+  --body: hsla(0,0%,100%,1);
+  --backdrop: hsla(15, 0%, 0%, 80%);
+  --dimmed: hsla(0,0%,100%,0.6);
+  --border: hsla(0,0%,0%,0.8);
+  --selectionColor: var(--body);
+  --selectionBackground: var(--accentXLight);
+}
+
+::selection {
+  background-color: var(--selectionBackground);
+  color: var(--selectionColor);
 }
 
 body {
+  background-color: var(--background);
+  color: var(--body);
   margin: 0;
   font-size: 0.875rem;
   line-height: 1.5;
