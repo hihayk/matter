@@ -35,10 +35,32 @@ const TaskWrapper = styled.li`
   min-height: calc(var(--maxDotSize) + 1rem);
   border-bottom: 1px solid var(--border);
   position: relative;
+  background-color: var(--background);
+  ${props => props.editorIsOpen ? 'z-index: 11' : 'z-index: 0'};
+  ${props => props.editorIsOpen && `
+    box-shadow: calc(50rem * -1 + 1rem*2) 0 var(--background), calc(50rem - 1rem*2) 0 var(--background);
+  `};
+`
+
+const TaskBackdrop = styled.div`
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background: hsla(0,0%,95%,0.8);
+  top: 0;
+  left: 0;
+  z-index: 10;
 `
 
 const TitleSection = styled.div`
+`
+
+const Title = styled.button`
+  font: inherit;
   font-size: var(--text-l);
+  color: inherit;
+  border: none;
+  cursor: pointer;
 `
 
 const PriorityDotWrapper = styled.button`
@@ -87,9 +109,9 @@ const ToggleButtonGroup = styled.div`
   }
 `
 
-const PriorityDot = ({ prority }) => {
+const PriorityDot = ({ prority, onClick }) => {
   return (
-    <PriorityDotWrapper prority={prority} style={{ '--dotSize' : `${prority / 2}rem` }}/>
+    <PriorityDotWrapper prority={prority} style={{ '--dotSize' : `${prority / 2}rem` }} onClick={onClick}/>
   )
 }
 
@@ -167,6 +189,70 @@ const exampleTasks = [
     completed: true,
   },
 ]
+
+const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick, deleteOnCLick }) => {
+  const [titleEditorIsOpen, setTitleEditorIsOpen] = useState(false)
+  const [priorityEditorIsOpen, setPriorityEditorIsOpen] = useState(false)
+
+  const editorIsOpen = titleEditorIsOpen || priorityEditorIsOpen
+
+  const closeAllEditors = () => {
+    setTitleEditorIsOpen(false)
+    setPriorityEditorIsOpen(false)
+  }
+
+  return (
+    <>
+      <TaskWrapper editorIsOpen={editorIsOpen}>
+        
+        <PriorityDotSection>
+          <PriorityDot prority={task.prority} onClick={() => setPriorityEditorIsOpen(true)}/>
+        </PriorityDotSection>
+        <TitleSection>
+          
+
+        {!titleEditorIsOpen && !priorityEditorIsOpen && (
+          <Title onClick={() => setTitleEditorIsOpen(true)}>
+            {task.title}
+          </Title>
+        )}
+        
+        {titleEditorIsOpen && (
+          <div>
+            <input
+              value={task.title}
+              onChange={titleInputOnChange}
+            />
+            <button onClick={() => setTitleEditorIsOpen(false)}>Done</button>
+          </div>
+        )}
+        </TitleSection>
+
+        {priorityEditorIsOpen && (
+          <div>
+            <input
+              type="range"
+              min={1}
+              max={10}
+              value={task.prority}
+              onChange={priorityInputOnChange}
+            />
+            <button onClick={() => setPriorityEditorIsOpen(false)}>Done</button>
+          </div>
+        )}
+
+        <button style={{ margin: '0 1rem 0 auto' }} onClick={completeOnCLick}>
+          {task.completed ? 'Reopen' : 'Complete'}
+        </button>
+        <button onClick={deleteOnCLick}>delete</button>
+      </TaskWrapper>
+      {editorIsOpen && (
+        <TaskBackdrop onClick={() => closeAllEditors()}/>
+      )}
+    </>
+  )
+}
+
 
 function App() {
   const [tasks, setTasks] = useLocalStorage('tasks', exampleTasks)
@@ -277,30 +363,14 @@ function App() {
         {filteredTasks.map((task, index) => {
 
           return (
-            <TaskWrapper key={index}>
-              <PriorityDotSection>
-                <PriorityDot prority={task.prority}/>
-              </PriorityDotSection>
-              <TitleSection>{task.title}</TitleSection>
-              <input
-                value={task.title}
-                onChange={e => setTasks(makeEditedTitle(task.id, e.target.value))}
-              />
-              
-              <input
-                type="range"
-                min={1}
-                max={10}
-                value={task.prority}
-                onChange={e => setTasks(makeEditedPriority(task.id, e.target.value))}
-              />
-
-              <button style={{ margin: '0 1rem 0 auto' }} onClick={() => setTasks(toggleCompleteTask(task.id))}>
-                {task.completed ? 'Reopen' : 'Complete'}
-              </button>
-              <button onClick={() => setTasks(deleteTask(task.id))}>delete</button>
-
-            </TaskWrapper>
+            <Task
+              task={task}
+              key={index}
+              titleInputOnChange={e => setTasks(makeEditedTitle(task.id, e.target.value))}
+              priorityInputOnChange={e => setTasks(makeEditedPriority(task.id, e.target.value))}
+              completeOnCLick={() => setTasks(toggleCompleteTask(task.id))}
+              deleteOnCLick={() => setTasks(deleteTask(task.id))}              
+            />
           )
         })}
       </TaskListContainer>
