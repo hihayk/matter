@@ -25,8 +25,8 @@
 
 :root {
   --accent: hsl(15, 100%, 44%);
-  --accentLight: hsl(15, 100%, 90%);
-  --accentXLight: hsl(15, 100%, 95%);
+  --accentLight: hsl(15, 100%, 44%, 20%);
+  --accentXLight: hsl(15, 100%, 44%, 50%);
   --accentDark: hsl(15, 10%, 20%);
 
   --dimmed: hsla(0,0%,0%,0.4);
