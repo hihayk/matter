@@ -22,10 +22,16 @@
   --backdrop: hsla(15, 10%, 90%, 80%);
   
   --text-xl: 2rem;
-  --text-l: 1rem;
+  --text-l: 1.5rem;
   
   --selectionColor: var(--accent);
   --selectionBackground: var(--accentLight);
+  
+  --sans: Marr Sans Web;
+  --mono: Atlas Typewriter;
+  --themeFont: var(--sans);
+
+  --titleSize: var(--text-xl);
 }
 
 body.dark {
@@ -37,6 +43,14 @@ body.dark {
   --border: hsla(0,0%,0%,0.8);
   --selectionColor: var(--body);
   --selectionBackground: var(--accentXLight);
+}
+
+body.mono {
+  --themeFont: var(--mono);
+}
+
+body.smallText {
+  --titleSize: var(--text-l);
 }
 
 ::selection {

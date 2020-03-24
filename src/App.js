@@ -164,14 +164,26 @@ const TaskList = ({
 
 function App() {
   const [tasks, setTasks] = useLocalStorage('tasks', exampleTasks)
-  const [darkModeOn, setDarkModeOn] = useLocalStorage('darkModeOn', false)
   const [taskCompleted, setTaskCompleted] = useState(true)
   const [order, setOrder] = useLocalStorage('order', 'dateAdded')
-
+  const [darkModeOn, setDarkModeOn] = useLocalStorage('darkModeOn', false)
+  const [monoOn, setMonofOn] = useLocalStorage('monoOn', false)
+  const [smallTextOn, setSmallTextOn] = useLocalStorage('smallTextOn', false)
+  
   if(darkModeOn) {
     document.body.classList.add('dark')
   } else {
     document.body.classList.remove('dark')
+  }
+  if(monoOn) {
+    document.body.classList.add('mono')
+  } else {
+    document.body.classList.remove('mono')
+  }
+  if(smallTextOn) {
+    document.body.classList.add('smallText')
+  } else {
+    document.body.classList.remove('smallText')
   }
 
   const makeEditedTitle = (editedId, newTitle) => {
@@ -274,10 +286,32 @@ function App() {
             </ToggleButton>
           </ToggleButtonGroup>
           
-          <ToggleButtonGroup>
+          <ToggleButtonGroup className="headerButtons">
             <ToggleButton onClick={() => setDarkModeOn(!darkModeOn)} className="ToggleButton">
               <ToggleButtonOption isActive={!darkModeOn} className="ToggleButtonOption">Light</ToggleButtonOption>
               <ToggleButtonOption isActive={darkModeOn} className="ToggleButtonOption">Dark</ToggleButtonOption>
+            </ToggleButton>
+          </ToggleButtonGroup>
+          
+          <ToggleButtonGroup className="headerButtons">
+            <ToggleButton onClick={() => setMonofOn(!monoOn)} className="ToggleButton">
+              <ToggleButtonOption isActive={!monoOn} className="ToggleButtonOption">
+                <span style={{ fontFamily: 'var(--mono)' }}>A</span>
+              </ToggleButtonOption>
+              <ToggleButtonOption isActive={monoOn} className="ToggleButtonOption">
+                <span style={{ fontFamily: 'var(--sans)' }}>A</span>
+              </ToggleButtonOption>
+            </ToggleButton>
+          </ToggleButtonGroup>
+          
+          <ToggleButtonGroup className="headerButtons">
+            <ToggleButton onClick={() => setSmallTextOn(!smallTextOn)} className="ToggleButton">
+              <ToggleButtonOption isActive={!smallTextOn} className="ToggleButtonOption">
+                <span>T</span>
+              </ToggleButtonOption>
+              <ToggleButtonOption isActive={smallTextOn} className="ToggleButtonOption">
+                <span style={{ fontSize: '70%' }}>T</span>
+              </ToggleButtonOption>
             </ToggleButton>
           </ToggleButtonGroup>
         </MainHeaderContent>

@@ -33,7 +33,7 @@ export const ToggleButtonGroup = styled.div`
   }
 
   &.headerButtons {
-    margin-right: 2rem;
+    margin-right: 1rem;
   }
 `
 

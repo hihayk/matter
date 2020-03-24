@@ -34,13 +34,14 @@ const TitleSection = styled.div`
 
 const Title = styled.button`
   font: inherit;
-  font-size: var(--text-xl);
+  font-size: var(--titleSize);
   color: inherit;
   border: none;
   cursor: text;
   padding: 0;
-  font-family: Marr Sans Web;
+  font-family: var(--themeFont);
   background-color: transparent;
+  ${props=> props.isCompleted && `text-decoration: line-through;`}
 `
 
 const PriorityDotWrapper = styled.button`
@@ -77,7 +78,7 @@ const PriorityDotSection = styled.div`
 
 const TitleInput = styled.input`
   font: inherit;
-  font-size: var(--text-xl);
+  font-size: var(--titleSize);
   color: inherit;
   border: none;
   padding: 1px 0 0 0;
@@ -234,7 +235,7 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
         <TitleSection>
 
           {!titleEditorIsOpen && !priorityEditorIsOpen && (
-            <Title onClick={() => handleTitleClick()}>
+            <Title onClick={() => handleTitleClick()} isCompleted={task.completed}>
               {task.title}
             </Title>
           )}
