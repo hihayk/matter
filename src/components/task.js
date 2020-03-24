@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled'
 import ToggleButton from './toggle-button'
 import SvgCheck from '../icons/check';
@@ -201,9 +201,10 @@ const PriorityDot = ({ prority, onClick }) => {
   )
 }
 
-const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick, deleteOnCLick, isVisible }) => {
+const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisible, makeEditedPriority, setTasks, storedTaskPrority }) => {
   const [titleEditorIsOpen, setTitleEditorIsOpen] = useState(false)
   const [priorityEditorIsOpen, setPriorityEditorIsOpen] = useState(false)
+  const [priorityValue, setPriorityValue] = useState(task.prority)
 
   const editorIsOpen = titleEditorIsOpen || priorityEditorIsOpen
 
@@ -225,12 +226,31 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
     priorityInput.current.focus();
   }
 
+  const handlePrioritySave = (value) => {
+    closeAllEditors(false)
+    setPriorityValue(value)
+    setTasks(makeEditedPriority(task.id, value))
+  }
+  
+  const handleBackdropClick = (value) => {
+    handlePrioritySave(value)
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if(!priorityEditorIsOpen) {
+        setPriorityValue(task.prority)
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [priorityEditorIsOpen, priorityValue, task.prority]);
+
   return (
     <>
       <TaskWrapper editorIsOpen={editorIsOpen} isVisible={isVisible}>
         
         <PriorityDotSection>
-          <PriorityDot prority={task.prority} onClick={() => handlePriorityClick()}/>
+          <PriorityDot prority={editorIsOpen ? priorityValue : task.prority} onClick={() => handlePriorityClick()}/>
         </PriorityDotSection>
         <TitleSection>
 
@@ -258,12 +278,13 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
                 type="range"
                 min={1}
                 max={10}
-                value={task.prority}
-                onChange={priorityInputOnChange}
+                value={priorityValue}
+                onChange={e => setPriorityValue(e.target.value)}
                 ref={priorityInput}
               />
             </PrioritySliderWrapper>
-            <ToggleButton className="ToggleButton" onClick={() => closeAllEditors(false)}>Done</ToggleButton>
+            
+            <ToggleButton className="ToggleButton" onClick={() => handlePrioritySave(priorityValue)}>Done</ToggleButton>
           </PriorityForm>
         </FormSection>
 
@@ -280,7 +301,7 @@ const Task = ({ task, titleInputOnChange, priorityInputOnChange, completeOnCLick
       </TaskWrapper>
 
       {editorIsOpen && (
-        <TaskBackdrop onClick={() => closeAllEditors()}/>
+        <TaskBackdrop onClick={() => handleBackdropClick(priorityValue)}/>
       )}
     </>
   )

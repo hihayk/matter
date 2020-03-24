@@ -154,6 +154,10 @@ const TaskList = ({
             priorityInputOnChange={e => setTasks(makeEditedPriority(task.id, e.target.value))}
             completeOnCLick={() => setTasks(toggleCompleteTask(task.id))}
             deleteOnCLick={() => setTasks(deleteTask(task.id))}
+            prorityOnSave={e => setTasks(makeEditedPriority(task.id, e.target.value))}
+            makeEditedPriority={makeEditedPriority}
+            setTasks={setTasks}
+            storedTaskPrority={task.prority}
           />
         )
       })}
