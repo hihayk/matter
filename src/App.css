@@ -51,6 +51,8 @@
   --maxDotSize: 5rem;
   --dotRatio: 2;
   --taskPaddingY: calc(var(--maxDotSize) + 0.5rem);
+
+  --pagePaddingX: 1rem;
 }
 
 body.dark {
@@ -79,7 +81,7 @@ body.smallText {
 
 @media (max-width: 800px) {
   :root {
-    --titleSize: var(--text-l);
+    --titleSize: 1.2rem;
   
     --maxDotSize: 2.5rem;
     --dotRatio: 4;

@@ -9,13 +9,18 @@ const TaskWrapper = styled.li`
   display: flex;
   align-items: center;
   min-height: var(--taskPaddingY);
+  padding: 0.5rem 0;
   border-bottom: 1px solid var(--border);
   position: relative;
   background-color: var(--background);
   ${props => props.isVisible && 'display: none'};
   ${props => props.editorIsOpen ? 'z-index: 11' : 'z-index: 0'};
   ${props => props.editorIsOpen && `
-    box-shadow: calc(50rem * -1 + 1rem*2) 0 var(--background), calc(50rem - 1rem*2) 0 var(--background);
+    box-shadow:
+    calc(50rem * -1 + 1rem*2) 0 var(--background),
+    calc(50rem - 1rem*2) 0 var(--background),
+    2rem 0 var(--background),
+    -2rem 0 var(--background);
   `};
 `
 
@@ -83,8 +88,15 @@ const PriorityDotSection = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  position: absolute;
-  left: calc(var(--maxDotSize) * -1 - 1rem);
+
+  @media (min-width: 960px) {
+    position: absolute;
+    left: calc(var(--maxDotSize) * -1 - 1rem);
+  }
+  
+  @media (max-width: 959px) {
+    margin-right: 1rem;
+  }
 `
 
 const TitleInput = styled.input`
@@ -93,11 +105,11 @@ const TitleInput = styled.input`
   color: inherit;
   border: none;
   padding: 1px 0 0 0;
-  flex-grow: 1;
   font-family: var(--themeFont);
   letter-spacing: var(--themeFontLS);
   background-color: transparent;
   margin-right: 1rem;
+  width: 100%;
 
   &:focus {
     outline: none;
@@ -107,6 +119,7 @@ const TitleInput = styled.input`
 const TitleForm = styled.form`
   display: flex;
   align-items: center;
+  
   ${props => props.isVisible ? '' : `
     opacity: 0;
     position: absolute;
@@ -137,6 +150,7 @@ const PriorityForm = styled.form`
 const PrioritySliderWrapper = styled.div`
   width: 100%;
   max-width: 30rem;
+  margin-right: 1rem;
   position: relative;
 
   &:before {
@@ -196,11 +210,13 @@ const PrioritySlider = styled.input`
 `
 
 const FormSection = styled.div`
-  flex-grow: 1;
+  width: 100%;
 `
 
 const TaskActionsSection = styled.div`
   display: flex;
+  padding-left: 1rem;
+  margin-left: auto;
 
   .IconButton + .IconButton {
     margin-left: 0.5rem;
@@ -273,7 +289,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
           
         </TitleSection>
 
-        <FormSection>
+        <FormSection style={{ width: titleEditorIsOpen || priorityEditorIsOpen ? '100%' : 'unset' }}>
           <TitleForm isVisible={titleEditorIsOpen && !priorityEditorIsOpen}>
             <TitleInput
               value={task.title}

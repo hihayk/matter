@@ -7,6 +7,7 @@ const ToggleButton = styled.button`
   border: none;
   cursor: pointer;
   white-space: nowrap;
+  display: inline-flex;
   color: ${props => props.isAccent ? 'white' : 'inherit'};
   background-color: ${props => props.isAccent ? 'var(--accent)' : 'transparent'};
   border: 1px solid ${props => props.isAccent ? 'transparent' : 'var(--xDimmed)'};
@@ -21,6 +22,10 @@ const ToggleButton = styled.button`
     color: var(--dimmed);
     margin: 0 0.5em;
   }
+
+  &.optionsButton {
+    margin-right: 0.5rem;
+  }
 `
 
 export const ToggleButtonOption = styled.span`
@@ -30,6 +35,16 @@ export const ToggleButtonOption = styled.span`
 export const ToggleButtonGroup = styled.div`
   &.headerButtons + .headerButtons {
     margin-left: 1rem;
+  }
+  @media (min-width: 799px) {
+    &.headerButtons + .headerButtonsRight {
+      margin-left: auto;
+    }
+  }
+  @media (max-width: 800px) {
+    &.fontButtons {
+      display: none;
+    }
   }
 `
 

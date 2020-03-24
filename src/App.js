@@ -7,7 +7,11 @@ import Task from './components/task'
 import Mousetrap from 'mousetrap'
 
 const GlobalContainer = styled.div`
-  
+  .headerButtonsSpacer {
+    width: var(--pagePaddingX);
+    height: 1rem;
+    flex-shrink: 0;
+  }
 `
 
 const MainHeader = styled.header`
@@ -20,10 +24,15 @@ const MainHeader = styled.header`
 
 const MainHeaderContent = styled.div`
   max-width: 50rem;
-  padding: 2rem 1rem;
+  padding: 2rem var(--pagePaddingX);
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  overflow: auto;
+
+  @media (max-width: 799px) {
+    padding: var(--pagePaddingX);
+  }
 `
 
 const TaskListContainer = styled.ul`
@@ -35,7 +44,7 @@ const TaskListContainer = styled.ul`
 const NewTaskButtonSection = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1rem;
 `
 
 const exampleTasks = [
@@ -317,7 +326,7 @@ function App() {
             </ToggleButton>
           </ToggleButtonGroup>
           
-          <ToggleButtonGroup className="headerButtons" style={{ marginLeft: 'auto' }}>
+          <ToggleButtonGroup className="headerButtons headerButtonsRight">
             <ToggleButton onClick={() => setDarkModeOn(!darkModeOn)} className="ToggleButton">
               <ToggleButtonOption isActive={!darkModeOn} className="ToggleButtonOption">Light</ToggleButtonOption>
               <ToggleButtonOption isActive={darkModeOn} className="ToggleButtonOption">Dark</ToggleButtonOption>
@@ -335,7 +344,7 @@ function App() {
             </ToggleButton>
           </ToggleButtonGroup>
           
-          <ToggleButtonGroup className="headerButtons">
+          <ToggleButtonGroup className="headerButtons fontButtons">
             <ToggleButton onClick={() => setSmallTextOn(!smallTextOn)} className="ToggleButton">
               <ToggleButtonOption isActive={!smallTextOn} className="ToggleButtonOption">
                 <span>T</span>
@@ -345,6 +354,8 @@ function App() {
               </ToggleButtonOption>
             </ToggleButton>
           </ToggleButtonGroup>
+
+          <div className="headerButtonsSpacer"/>
         </MainHeaderContent>
       </MainHeader>
       <TaskListContainer key={order}>
@@ -352,7 +363,7 @@ function App() {
         {taskCompleted && (
           <NewTaskButtonSection>
             <ToggleButton isAccent onClick={() => setTasks(addTask())}>
-              New <span style={{ opacity: 0.7 }}>(alt + n)</span>
+              New<span style={{ opacity: 0.7, paddingLeft: '0.5em' }}> (alt + n)</span>
             </ToggleButton>
           </NewTaskButtonSection>
         )}
