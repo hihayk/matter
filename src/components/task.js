@@ -83,7 +83,7 @@ const TitleInput = styled.input`
   border: none;
   padding: 1px 0 0 0;
   flex-grow: 1;
-  font-family: Marr Sans Web;
+  font-family: var(--themeFont);
   background-color: transparent;
 
   &:focus {

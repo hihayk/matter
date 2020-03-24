@@ -20,7 +20,7 @@ const MainHeader = styled.header`
 
 const MainHeaderContent = styled.div`
   max-width: 50rem;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
   margin: 0 auto;
   display: flex;
 `
@@ -29,6 +29,12 @@ const TaskListContainer = styled.ul`
   max-width: 50rem;
   padding: 0 1rem 8rem 1rem;
   margin: 0 auto;
+`
+
+const NewTaskButtonSection = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 0;
 `
 
 const exampleTasks = [
@@ -252,7 +258,7 @@ function App() {
     result.push(
       {
         id: getHighestId() + 1,
-        title: 'This is a new task',
+        title: 'New task click to edit',
         prority: 1,
         completed: false,
         dateAdded: new Date(),
@@ -290,7 +296,7 @@ function App() {
             </ToggleButton>
           </ToggleButtonGroup>
           
-          <ToggleButtonGroup className="headerButtons">
+          <ToggleButtonGroup className="headerButtons" style={{ marginLeft: 'auto' }}>
             <ToggleButton onClick={() => setDarkModeOn(!darkModeOn)} className="ToggleButton">
               <ToggleButtonOption isActive={!darkModeOn} className="ToggleButtonOption">Light</ToggleButtonOption>
               <ToggleButtonOption isActive={darkModeOn} className="ToggleButtonOption">Dark</ToggleButtonOption>
@@ -300,10 +306,10 @@ function App() {
           <ToggleButtonGroup className="headerButtons">
             <ToggleButton onClick={() => setMonofOn(!monoOn)} className="ToggleButton">
               <ToggleButtonOption isActive={!monoOn} className="ToggleButtonOption">
-                <span style={{ fontFamily: 'var(--mono)' }}>A</span>
+                <span style={{ fontFamily: 'var(--mono)', lineHeight: 1 }}>A</span>
               </ToggleButtonOption>
               <ToggleButtonOption isActive={monoOn} className="ToggleButtonOption">
-                <span style={{ fontFamily: 'var(--sans)' }}>A</span>
+                <span style={{ fontFamily: 'var(--sans)', lineHeight: 1 }}>A</span>
               </ToggleButtonOption>
             </ToggleButton>
           </ToggleButtonGroup>
@@ -322,12 +328,11 @@ function App() {
       </MainHeader>
       <TaskListContainer key={order}>
 
-        <button onClick={() => setTasks(addTask())}>
-          New task
-        </button>
-        <button onClick={() => localStorage.clear()}>
-          Clear localStorage
-        </button>
+        <NewTaskButtonSection>
+          <ToggleButton isAccent onClick={() => setTasks(addTask())}>
+            New task
+          </ToggleButton>
+        </NewTaskButtonSection>
 
         <TaskList
           tasks={tasks}

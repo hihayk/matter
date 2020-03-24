@@ -4,16 +4,16 @@ import styled from '@emotion/styled'
 const ToggleButton = styled.button`
   font: inherit;
   font-weight: 500;
-  color: inherit;
   padding: 0.5rem 0.75rem;
   border: none;
-  background: none;
+  color: ${props => props.isAccent ? 'white' : 'inherit'};
+  background-color: ${props => props.isAccent ? 'var(--accent)' : 'transparent'};
   cursor: pointer;
-  box-shadow: inset 0 0 0 1px var(--xDimmed);
+  border: 1px solid ${props => props.isAccent ? 'transparent' : 'var(--xDimmed)'};
 
   &:focus {
     outline: none;
-    box-shadow: inset 0 0 0 ${props => props.isChecked ? '2px var(--accent)' : '1px var(--accent)'};
+    border-color: var(--accent);
   }
 
   & .ToggleButtonOption + .ToggleButtonOption:before {
@@ -28,12 +28,8 @@ export const ToggleButtonOption = styled.span`
 `
 
 export const ToggleButtonGroup = styled.div`
-  & .ToggleButton + .ToggleButton {
-    margin-left: 0.25rem;
-  }
-
-  &.headerButtons {
-    margin-right: 1rem;
+  &.headerButtons + .headerButtons {
+    margin-left: 1rem;
   }
 `
 
