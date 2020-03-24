@@ -1,4 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+@font-face {
+  font-family: 'Marr Sans Web';
+  src: url('./assets/fonts/MarrSansWeb-Regular.woff2') format('woff2'),
+      url('./assets/fonts/MarrSansWeb-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Atlas Typewriter';
+  src: url('./assets/fonts/AtlasTypewriterRegular.woff2') format('woff2'),
+      url('./assets/fonts/AtlasTypewriterRegular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 *, *:before, *:after {
   box-sizing: border-box;
