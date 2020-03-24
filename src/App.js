@@ -23,6 +23,7 @@ const MainHeaderContent = styled.div`
   padding: 2rem 1rem;
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
 `
 
 const TaskListContainer = styled.ul`
@@ -47,7 +48,7 @@ const exampleTasks = [
   },
   {
     id: 2,
-    title: 'Wash the bike',
+    title: 'Clean the bike',
     prority: 2,
     completed: false,
     dateAdded: new Date('11/14/2013 00:02'),
@@ -280,9 +281,18 @@ function App() {
       event.preventDefault();
       setTasks(addTask())
     });
-
     return () => {
       Mousetrap.unbind('alt+n');
+    };
+  });
+  
+  useEffect(() => {
+    Mousetrap.bind('shift+c+l', event => {
+      event.preventDefault();
+      localStorage.clear()
+    });
+    return () => {
+      Mousetrap.unbind('shift+c+l');
     };
   });
   

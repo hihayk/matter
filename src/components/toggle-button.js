@@ -1,4 +1,3 @@
-import React, { useState, useRef } from 'react';
 import styled from '@emotion/styled'
 
 const ToggleButton = styled.button`
@@ -6,9 +5,10 @@ const ToggleButton = styled.button`
   font-weight: 500;
   padding: 0.5rem 0.75rem;
   border: none;
+  cursor: pointer;
+  white-space: nowrap;
   color: ${props => props.isAccent ? 'white' : 'inherit'};
   background-color: ${props => props.isAccent ? 'var(--accent)' : 'transparent'};
-  cursor: pointer;
   border: 1px solid ${props => props.isAccent ? 'transparent' : 'var(--xDimmed)'};
   
   &:focus {
