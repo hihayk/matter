@@ -94,7 +94,7 @@ const TitleInput = styled.input`
   }
 `
 
-const TitleForm = styled.div`
+const TitleForm = styled.form`
   display: flex;
   align-items: center;
   ${props => props.isVisible ? '' : `
@@ -106,7 +106,7 @@ const TitleForm = styled.div`
   };
 `
 
-const PriorityForm = styled.div`
+const PriorityForm = styled.form`
   display: flex;
   min-height: 22px;
   align-items: center;
@@ -229,14 +229,11 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
     priorityInput.current.focus();
   }
 
-  const handlePrioritySave = (value) => {
+  const handleSave = (value, event) => {
+    event.preventDefault();
     closeAllEditors(false)
     setPriorityValue(value)
     setTasks(makeEditedPriority(task.id, value))
-  }
-  
-  const handleBackdropClick = (value) => {
-    handlePrioritySave(value)
   }
 
   useEffect(() => {
@@ -272,7 +269,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
               onChange={titleInputOnChange}
               ref={titleInput}
             />
-            <ToggleButton onClick={() => closeAllEditors(false)}>Done</ToggleButton>
+            <ToggleButton onClick={(e) => handleSave(priorityValue, e)}>Done</ToggleButton>
           </TitleForm>
 
           <PriorityForm isVisible={priorityEditorIsOpen}>
@@ -287,7 +284,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
               />
             </PrioritySliderWrapper>
             
-            <ToggleButton className="ToggleButton" onClick={() => handlePrioritySave(priorityValue)}>Done</ToggleButton>
+            <ToggleButton className="ToggleButton" onClick={(e) => handleSave(priorityValue, e)}>Done</ToggleButton>
           </PriorityForm>
         </FormSection>
 
@@ -304,7 +301,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
       </TaskWrapper>
 
       {editorIsOpen && (
-        <TaskBackdrop onClick={() => handleBackdropClick(priorityValue)}/>
+        <TaskBackdrop onClick={(e) => handleSave(priorityValue, e)}/>
       )}
     </>
   )

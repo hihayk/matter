@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import styled from '@emotion/styled'
 import useLocalStorage from './useLocalStorage'
 import ToggleButton, { ToggleButtonGroup, ToggleButtonOption } from './components/toggle-button'
 import Task from './components/task'
+import Mousetrap from 'mousetrap'
 
 const GlobalContainer = styled.div`
   
@@ -273,6 +274,17 @@ function App() {
 
   const pendingAmount = tasks.filter(task => task.completed === false).length
   const completedAmount = tasks.filter(task => task.completed === true).length
+
+  useEffect(() => {
+    Mousetrap.bind('alt+n', event => {
+      event.preventDefault();
+      setTasks(addTask())
+    });
+
+    return () => {
+      Mousetrap.unbind('alt+n');
+    };
+  });
   
   return (
     <GlobalContainer>
@@ -330,7 +342,7 @@ function App() {
         {taskCompleted && (
           <NewTaskButtonSection>
             <ToggleButton isAccent onClick={() => setTasks(addTask())}>
-              New task
+              New <span style={{ opacity: 0.7 }}>(alt + n)</span>
             </ToggleButton>
           </NewTaskButtonSection>
         )}
