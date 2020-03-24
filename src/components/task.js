@@ -43,6 +43,7 @@ const Title = styled.button`
   letter-spacing: var(--themeFontLS);
   background-color: transparent;
   ${props=> props.isCompleted && `text-decoration: line-through;`}
+  text-align: left;
 `
 
 const PriorityDotWrapper = styled.button`

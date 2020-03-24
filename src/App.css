@@ -62,6 +62,16 @@ body.smallText {
   --taskPaddingY: calc(var(--maxDotSize) + 1rem);
 }
 
+@media (max-width: 800px) {
+  :root {
+    --titleSize: var(--text-l);
+  
+    --maxDotSize: 2.5rem;
+    --dotRatio: 4;
+    --taskPaddingY: calc(var(--maxDotSize) + 1rem);
+  }
+}
+
 ::selection {
   background-color: var(--selectionBackground);
   color: var(--selectionColor);
