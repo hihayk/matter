@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/matter/static/css/main.2f4cbe4e.chunk.css",
+    "main.js": "/matter/static/js/main.aea37f5f.chunk.js",
+    "main.js.map": "/matter/static/js/main.aea37f5f.chunk.js.map",
+    "runtime-main.js": "/matter/static/js/runtime-main.f02ff4b6.js",
+    "runtime-main.js.map": "/matter/static/js/runtime-main.f02ff4b6.js.map",
+    "static/js/2.deff2a09.chunk.js": "/matter/static/js/2.deff2a09.chunk.js",
+    "static/js/2.deff2a09.chunk.js.map": "/matter/static/js/2.deff2a09.chunk.js.map",
+    "index.html": "/matter/index.html",
+    "precache-manifest.ebd6ec2f60259b999ca2245de245fcd8.js": "/matter/precache-manifest.ebd6ec2f60259b999ca2245de245fcd8.js",
+    "service-worker.js": "/matter/service-worker.js",
+    "static/css/main.2f4cbe4e.chunk.css.map": "/matter/static/css/main.2f4cbe4e.chunk.css.map",
+    "static/js/2.deff2a09.chunk.js.LICENSE.txt": "/matter/static/js/2.deff2a09.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/matter/static/media/MarrSansWeb-Regular.a9422004.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f02ff4b6.js",
+    "static/js/2.deff2a09.chunk.js",
+    "static/css/main.2f4cbe4e.chunk.css",
+    "static/js/main.aea37f5f.chunk.js"
+  ]
+}
