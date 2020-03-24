@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import styled from '@emotion/styled'
 import useLocalStorage from './useLocalStorage'
@@ -6,8 +6,7 @@ import ToggleButton, { ToggleButtonGroup, ToggleButtonOption } from './component
 import Task from './components/task'
 
 const GlobalContainer = styled.div`
-  --dotSize: 5rem;
-  --maxDotSize: 5rem;
+  
 `
 
 const MainHeader = styled.header`
@@ -27,14 +26,14 @@ const MainHeaderContent = styled.div`
 
 const TaskListContainer = styled.ul`
   max-width: 50rem;
-  padding: 0 1rem 8rem 1rem;
+  padding: 1rem 1rem 8rem 1rem;
   margin: 0 auto;
 `
 
 const NewTaskButtonSection = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 1rem 0;
+  padding-bottom: 0.5rem;
 `
 
 const exampleTasks = [
@@ -328,11 +327,13 @@ function App() {
       </MainHeader>
       <TaskListContainer key={order}>
 
-        <NewTaskButtonSection>
-          <ToggleButton isAccent onClick={() => setTasks(addTask())}>
-            New task
-          </ToggleButton>
-        </NewTaskButtonSection>
+        {taskCompleted && (
+          <NewTaskButtonSection>
+            <ToggleButton isAccent onClick={() => setTasks(addTask())}>
+              New task
+            </ToggleButton>
+          </NewTaskButtonSection>
+        )}
 
         <TaskList
           tasks={tasks}

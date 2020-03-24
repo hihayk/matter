@@ -8,7 +8,7 @@ import SvgCross from '../icons/cross';
 const TaskWrapper = styled.li`
   display: flex;
   align-items: center;
-  min-height: calc(var(--maxDotSize) + 0.5rem);
+  min-height: var(--taskPaddingY);
   border-bottom: 1px solid var(--border);
   position: relative;
   background-color: var(--background);
@@ -40,6 +40,7 @@ const Title = styled.button`
   cursor: text;
   padding: 0;
   font-family: var(--themeFont);
+  letter-spacing: var(--themeFontLS);
   background-color: transparent;
   ${props=> props.isCompleted && `text-decoration: line-through;`}
 `
@@ -84,6 +85,7 @@ const TitleInput = styled.input`
   padding: 1px 0 0 0;
   flex-grow: 1;
   font-family: var(--themeFont);
+  letter-spacing: var(--themeFontLS);
   background-color: transparent;
 
   &:focus {
@@ -196,7 +198,7 @@ const TaskActionsSection = styled.div`
 const PriorityDot = ({ prority, onClick }) => {
   return (
     <PriorityDotWrapper onClick={onClick}>
-      <Dot prority={prority} style={{ '--dotSize' : `${prority / 2}rem` }}/>
+      <Dot prority={prority} style={{ '--dotSize' : `calc(${prority}rem / var(--dotRatio))` }}/>
     </PriorityDotWrapper>
   )
 }
@@ -292,8 +294,8 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
           <>
             <TaskActionsSection>
 
-              <IconButton icon={<SvgCheck />} onClick={completeOnCLick} isChecked={task.completed}/>
-              <IconButton icon={<SvgCross />} onClick={deleteOnCLick}/>
+              <IconButton icon={<SvgCheck />} size="var(--maxDotSize)" onClick={completeOnCLick} isChecked={task.completed}/>
+              <IconButton icon={<SvgCross />} size="var(--maxDotSize)" onClick={deleteOnCLick}/>
 
             </TaskActionsSection>
           </>

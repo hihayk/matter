@@ -32,6 +32,10 @@
   --themeFont: var(--sans);
 
   --titleSize: var(--text-xl);
+
+  --maxDotSize: 5rem;
+  --dotRatio: 2;
+  --taskPaddingY: calc(var(--maxDotSize) + 0.5rem);
 }
 
 body.dark {
@@ -47,10 +51,15 @@ body.dark {
 
 body.mono {
   --themeFont: var(--mono);
+  --themeFontLS: -0.04em;
 }
 
 body.smallText {
   --titleSize: var(--text-l);
+
+  --maxDotSize: 2.5rem;
+  --dotRatio: 4;
+  --taskPaddingY: calc(var(--maxDotSize) + 1rem);
 }
 
 ::selection {
