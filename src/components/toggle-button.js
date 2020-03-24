@@ -10,10 +10,10 @@ const ToggleButton = styled.button`
   background-color: ${props => props.isAccent ? 'var(--accent)' : 'transparent'};
   cursor: pointer;
   border: 1px solid ${props => props.isAccent ? 'transparent' : 'var(--xDimmed)'};
-
+  
   &:focus {
-    outline: none;
     border-color: var(--accent);
+    outline: ${props => props.isAccent ? '4px solid var(--accentLight)' : 'none'};
   }
 
   & .ToggleButtonOption + .ToggleButtonOption:before {

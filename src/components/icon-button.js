@@ -14,6 +14,17 @@ const Wrapper = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  
+  &:active {
+    border-color: transparent;
+    background-color: ${props => props.isChecked ? 'transparent' : 'var(--body)'};
+    color: ${props => props.isChecked ? 'var(--body)' : 'var(--background)'};
+  }
 `
 
 const IconButton = ({icon, isChecked, ...props}) => {

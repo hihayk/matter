@@ -27,6 +27,7 @@
   --accent: hsl(15, 100%, 44%);
   --accentLight: hsl(15, 100%, 90%);
   --accentXLight: hsl(15, 100%, 95%);
+  --accentDark: hsl(15, 10%, 20%);
 
   --dimmed: hsla(0,0%,0%,0.4);
   --xDimmed: hsla(0,0%,0%,0.2);
@@ -60,7 +61,7 @@ body.dark {
   --xDimmed: hsla(0, 0%, 100%, 0.2);
   --border: hsla(0,0%,0%,0.8);
   --selectionColor: var(--body);
-  --selectionBackground: var(--accentXLight);
+  --selectionBackground: var(--accent);
 }
 
 body.mono {

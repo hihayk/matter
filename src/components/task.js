@@ -44,6 +44,11 @@ const Title = styled.button`
   background-color: transparent;
   ${props=> props.isCompleted && `text-decoration: line-through;`}
   text-align: left;
+
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
 `
 
 const PriorityDotWrapper = styled.button`
@@ -57,6 +62,10 @@ const PriorityDotWrapper = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &:focus {
+    outline: none;
+  }
 `
 
 const Dot = styled.div`
@@ -88,6 +97,7 @@ const TitleInput = styled.input`
   font-family: var(--themeFont);
   letter-spacing: var(--themeFontLS);
   background-color: transparent;
+  margin-right: 1rem;
 
   &:focus {
     outline: none;
@@ -110,6 +120,7 @@ const PriorityForm = styled.form`
   display: flex;
   min-height: 22px;
   align-items: center;
+  justify-content: space-between;
   ${props => props.isVisible ? '' : `
     opacity: 0;
     position: absolute;
@@ -269,7 +280,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
               onChange={titleInputOnChange}
               ref={titleInput}
             />
-            <ToggleButton onClick={(e) => handleSave(priorityValue, e)}>Done</ToggleButton>
+            <ToggleButton isAccent onClick={(e) => handleSave(priorityValue, e)}>Done</ToggleButton>
           </TitleForm>
 
           <PriorityForm isVisible={priorityEditorIsOpen}>
@@ -284,7 +295,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
               />
             </PrioritySliderWrapper>
             
-            <ToggleButton className="ToggleButton" onClick={(e) => handleSave(priorityValue, e)}>Done</ToggleButton>
+            <ToggleButton isAccent onClick={(e) => handleSave(priorityValue, e)}>Done</ToggleButton>
           </PriorityForm>
         </FormSection>
 
