@@ -143,6 +143,7 @@ const TaskList = ({
   deleteTask,
   taskCompleted,
   order,
+  toggleRemoveFocus,
 }) => {
   
   const highestPriorityTasks = () => {
@@ -174,6 +175,7 @@ const TaskList = ({
             makeEditedPriority={makeEditedPriority}
             setTasks={setTasks}
             storedTaskPrority={task.prority}
+            toggleRemoveFocus={toggleRemoveFocus}
           />
         )
       })}
@@ -248,6 +250,20 @@ function App() {
     return result
   }
   
+  const toggleRemoveFocus = () => {
+    let result = []
+
+    tasks.map((task) => {
+      if(task.focused) {
+        task.focused = false
+      }
+
+      return result.push(task)
+    })
+
+    return result
+  }
+  
   const deleteTask = (editedId) => {
     return tasks.filter(task => task.id !== editedId)
   }
@@ -268,10 +284,11 @@ function App() {
     result.push(
       {
         id: getHighestId() + 1,
-        title: 'New task click to edit',
+        title: 'New task',
         prority: 1,
         completed: false,
         dateAdded: new Date(),
+        focused: true,
       }
     )
 
@@ -377,6 +394,7 @@ function App() {
           toggleCompleteTask={toggleCompleteTask}
           deleteTask={deleteTask}
           taskCompleted={taskCompleted}
+          toggleRemoveFocus={toggleRemoveFocus}
         />
         
       </TaskListContainer>

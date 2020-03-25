@@ -5,6 +5,14 @@ import SvgCheck from '../icons/check';
 import IconButton from './icon-button';
 import SvgCross from '../icons/cross';
 
+const ScrollPositioner = styled.div`
+  width: 1px;
+  height: 1px;
+  display: block;
+  position: absolute;
+  top: -30vh;
+`
+
 const TaskWrapper = styled.li`
   display: flex;
   align-items: center;
@@ -231,7 +239,7 @@ const PriorityDot = ({ prority, onClick }) => {
   )
 }
 
-const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisible, makeEditedPriority, setTasks, storedTaskPrority }) => {
+const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisible, makeEditedPriority, setTasks, toggleRemoveFocus }) => {
   const [titleEditorIsOpen, setTitleEditorIsOpen] = useState(false)
   const [priorityEditorIsOpen, setPriorityEditorIsOpen] = useState(false)
   const [priorityValue, setPriorityValue] = useState(task.prority)
@@ -245,6 +253,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
 
   const titleInput = useRef(null);
   const priorityInput = useRef(null);
+  const scrollPositioner = useRef(null);
 
   const handleTitleClick = () => {
     setTitleEditorIsOpen(true)
@@ -261,6 +270,8 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
     closeAllEditors(false)
     setPriorityValue(value)
     setTasks(makeEditedPriority(task.id, value))
+    setTasks(toggleRemoveFocus())
+    titleInput.current.blur();
   }
 
   useEffect(() => {
@@ -268,13 +279,28 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
       if(!priorityEditorIsOpen) {
         setPriorityValue(task.prority)
       }
-    }, 500);
+    }, 20);
     return () => clearTimeout(timer);
   }, [priorityEditorIsOpen, priorityValue, task.prority]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if(task.focused){
+        console.log(task)
+        setTitleEditorIsOpen(true)
+        titleInput.current.select();
+        scrollPositioner.current.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }
+    }, 30);
+    return () => clearTimeout(timer);
+  }, [task, task.focused, task.id]);
 
   return (
     <>
       <TaskWrapper editorIsOpen={editorIsOpen} isVisible={isVisible}>
+        <ScrollPositioner ref={scrollPositioner}/>
         
         <PriorityDotSection>
           <PriorityDot prority={editorIsOpen ? priorityValue : task.prority} onClick={() => handlePriorityClick()}/>
