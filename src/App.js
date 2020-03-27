@@ -5,6 +5,7 @@ import useLocalStorage from './useLocalStorage'
 import ToggleButton, { ToggleButtonGroup, ToggleButtonOption } from './components/toggle-button'
 import Task from './components/task'
 import Mousetrap from 'mousetrap'
+import Intro from './components/intro';
 
 const GlobalContainer = styled.div`
   .headerButtonsSpacer {
@@ -324,6 +325,7 @@ function App() {
   
   return (
     <GlobalContainer>
+      <Intro />
       <MainHeader>
         <MainHeaderContent>
           <ToggleButtonGroup className="headerButtons">
