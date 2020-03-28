@@ -258,26 +258,36 @@ const TooltipWrapper = styled.div`
   --padding: 1rem;
   --tooltipEdgeToArrowCenter: 26px;
 
-  left: calc(var(--negativeDotSize) / 2 - var(--padding) - var(--tooltipEdgeToArrowCenter));
-  
   font-weight: 700;
   animation: ${tooltipIntro} 1s;
+  
+  left: calc(var(--maxDotSize) / 2 - var(--tooltipEdgeToArrowCenter));
+  
+  @media (min-width: 960px) {
+    left: calc(var(--negativeDotSize) / 2 - var(--padding) - var(--tooltipEdgeToArrowCenter));
+  }
 
   .tooltipIcon {
     animation: ${arrowBounce} 1s infinite;
+    margin-right: 0.75rem;
   }
 `
 
 const TooltipText = styled.div`
-  padding-left: 0.75rem;
 `
 
-const TutorialTooltip = ({ isVisible }) => {
+const TutorialTooltip = ({ isVisible, priorityEditorIsOpen }) => {
 
   return (
     <TooltipWrapper isVisible={isVisible}>
-      <SvgArrowDown className="tooltipIcon" />
-      <TooltipText>Adjust priority here</TooltipText>
+      {priorityEditorIsOpen ? (
+        <TooltipText>Adjust the circle size with the slider to indicate priority</TooltipText>
+      ):(
+        <>
+          <SvgArrowDown className="tooltipIcon" />
+          <TooltipText>Adjust priority here</TooltipText>
+        </>
+      )}
     </TooltipWrapper>
   )
 }
@@ -355,8 +365,8 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
     <>
       <TaskWrapper editorIsOpen={editorIsOpen} isVisible={isVisible}>
         
-        {tooltipSeenTimes < 2 && titleEditorIsOpen && !priorityEditorIsOpen && (
-          <TutorialTooltip isVisible={titleEditorIsOpen && !priorityEditorIsOpen} />
+        {tooltipSeenTimes < 2 && (titleEditorIsOpen || priorityEditorIsOpen) && (
+          <TutorialTooltip isVisible={titleEditorIsOpen && !priorityEditorIsOpen} priorityEditorIsOpen={priorityEditorIsOpen} />
         )}
         
         <ScrollPositioner ref={scrollPositioner}/>

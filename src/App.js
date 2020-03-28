@@ -6,6 +6,7 @@ import ToggleButton, { ToggleButtonGroup, ToggleButtonOption } from './component
 import Task from './components/task'
 import Mousetrap from 'mousetrap'
 import Intro from './components/intro';
+import { exampleTasks } from './example-tasks';
 
 const GlobalContainer = styled.div`
   .headerButtonsSpacer {
@@ -47,93 +48,6 @@ const NewTaskButtonSection = styled.div`
   justify-content: flex-end;
   padding-bottom: 1rem;
 `
-
-const exampleTasks = [
-  {
-    id: 1,
-    title: 'Buy tool to change pedals',
-    prority: 4,
-    completed: false,
-    dateAdded: new Date('11/14/2019 00:01'),
-  },
-  {
-    id: 2,
-    title: 'Clean the bike',
-    prority: 2,
-    completed: false,
-    dateAdded: new Date('11/14/2013 00:02'),
-  },
-  {
-    id: 3,
-    title: 'Get reel tape',
-    prority: 10,
-    completed: true,
-    dateAdded: new Date('11/14/2013 00:03'),
-  },
-  {
-    id: 4,
-    title: 'Buy center table',
-    prority: 1,
-    completed: true,
-    dateAdded: new Date('11/14/2018 00:04'),
-  },
-  {
-    id: 5,
-    title: 'Wash the bike',
-    prority: 7,
-    completed: false,
-    dateAdded: new Date('11/14/2013 00:05'),
-  },
-  {
-    id: 6,
-    title: 'Get reel tape',
-    prority: 3,
-    completed: true,
-    dateAdded: new Date('11/14/2013 00:06'),
-  },
-  {
-    id: 7,
-    title: 'Buy center table',
-    prority: 1,
-    completed: true,
-    dateAdded: new Date('11/14/2013 00:07'),
-  },
-  {
-    id: 8,
-    title: 'Get reel tape',
-    prority: 8,
-    completed: true,
-    dateAdded: new Date('11/14/2013 00:08'),
-  },
-  {
-    id: 9,
-    title: 'Buy center table',
-    prority: 1,
-    completed: true,
-    dateAdded: new Date('11/14/2013 00:09'),
-  },
-  {
-    id: 10,
-    title: 'Wash the bike',
-    prority: 6,
-    completed: false,
-    dateAdded: new Date('11/14/2013 00:10'),
-  },
-  {
-    id: 11,
-    title: 'Get reel tape',
-    prority: 3,
-    completed: true,
-    dateAdded: new Date('11/14/2013 00:11'),
-  },
-  {
-    id: 12,
-    title: 'Buy center table',
-    prority: 1,
-    completed: true,
-    dateAdded: new Date('11/14/2013 00:12'),
-  },
-]
 
 const TaskList = ({
   tasks,
