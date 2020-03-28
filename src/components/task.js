@@ -4,6 +4,9 @@ import ToggleButton from './toggle-button'
 import SvgCheck from '../icons/check';
 import IconButton from './icon-button';
 import SvgCross from '../icons/cross';
+import SvgArrowDown from '../icons/arrow-down';
+import { keyframes } from 'emotion';
+import useLocalStorage from '../useLocalStorage';
 
 const ScrollPositioner = styled.div`
   width: 1px;
@@ -231,6 +234,55 @@ const TaskActionsSection = styled.div`
   }
 `
 
+const arrowBounce = keyframes`
+  50% {
+    transform: translate(0, 0.3rem);
+  }
+`
+
+const tooltipIntro = keyframes`
+  0%, 70% {
+    opacity: 0;
+    transform: translate(0, 1rem);
+  }
+`
+
+const TooltipWrapper = styled.div`
+  background-color: white;
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  
+  --negativeDotSize: calc(var(--maxDotSize) * -1);
+  --padding: 1rem;
+  --tooltipEdgeToArrowCenter: 26px;
+
+  left: calc(var(--negativeDotSize) / 2 - var(--padding) - var(--tooltipEdgeToArrowCenter));
+  
+  font-weight: 700;
+  animation: ${tooltipIntro} 1s;
+
+  .tooltipIcon {
+    animation: ${arrowBounce} 1s infinite;
+  }
+`
+
+const TooltipText = styled.div`
+  padding-left: 0.75rem;
+`
+
+const TutorialTooltip = ({ isVisible }) => {
+
+  return (
+    <TooltipWrapper isVisible={isVisible}>
+      <SvgArrowDown className="tooltipIcon" />
+      <TooltipText>Adjust priority here</TooltipText>
+    </TooltipWrapper>
+  )
+}
+
 const PriorityDot = ({ prority, onClick }) => {
   return (
     <PriorityDotWrapper onClick={onClick}>
@@ -239,7 +291,7 @@ const PriorityDot = ({ prority, onClick }) => {
   )
 }
 
-const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisible, makeEditedPriority, setTasks, toggleRemoveFocus }) => {
+const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisible, makeEditedPriority, setTasks, toggleRemoveFocus, setTooltipSeen, tooltipSeen }) => {
   const [titleEditorIsOpen, setTitleEditorIsOpen] = useState(false)
   const [priorityEditorIsOpen, setPriorityEditorIsOpen] = useState(false)
   const [priorityValue, setPriorityValue] = useState(task.prority)
@@ -258,6 +310,9 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
   const handleTitleClick = () => {
     setTitleEditorIsOpen(true)
     titleInput.current.select();
+    if(tooltipSeen < 2) {
+      setTooltipSeen(tooltipSeen + 1)
+    }
   }
   
   const handlePriorityClick = () => {
@@ -300,6 +355,11 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
   return (
     <>
       <TaskWrapper editorIsOpen={editorIsOpen} isVisible={isVisible}>
+        
+        {tooltipSeen < 2 && titleEditorIsOpen && !priorityEditorIsOpen && (
+          <TutorialTooltip isVisible={titleEditorIsOpen && !priorityEditorIsOpen} />
+        )}
+        
         <ScrollPositioner ref={scrollPositioner}/>
         
         <PriorityDotSection>

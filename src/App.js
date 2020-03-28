@@ -145,6 +145,8 @@ const TaskList = ({
   taskCompleted,
   order,
   toggleRemoveFocus,
+  setTooltipSeen,
+  tooltipSeen,
 }) => {
   
   const highestPriorityTasks = () => {
@@ -177,6 +179,8 @@ const TaskList = ({
             setTasks={setTasks}
             storedTaskPrority={task.prority}
             toggleRemoveFocus={toggleRemoveFocus}
+            setTooltipSeen={setTooltipSeen}
+            tooltipSeen={tooltipSeen}
           />
         )
       })}
@@ -192,6 +196,7 @@ function App() {
   const [darkModeOn, setDarkModeOn] = useLocalStorage('darkModeOn', false)
   const [monoOn, setMonofOn] = useLocalStorage('monoOn', false)
   const [smallTextOn, setSmallTextOn] = useLocalStorage('smallTextOn', false)
+  const [tooltipSeen, setTooltipSeen] = useLocalStorage('tooltipSeen', 0)
   
   if(darkModeOn) {
     document.body.classList.add('dark')
@@ -397,6 +402,8 @@ function App() {
           deleteTask={deleteTask}
           taskCompleted={taskCompleted}
           toggleRemoveFocus={toggleRemoveFocus}
+          setTooltipSeen={setTooltipSeen}
+          tooltipSeen={tooltipSeen}
         />
         
       </TaskListContainer>
