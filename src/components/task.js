@@ -5,6 +5,7 @@ import SvgCheck from '../icons/check';
 import IconButton from './icon-button';
 import SvgCross from '../icons/cross';
 import TutorialTooltip from './tutorial-tooltip';
+import PriorityDot from './priority-dot';
 
 const ScrollPositioner = styled.div`
   width: 1px;
@@ -63,31 +64,6 @@ const Title = styled.button`
     outline: none;
     box-shadow: inset 0 0 0 1px var(--accent);
   }
-`
-
-const PriorityDotWrapper = styled.button`
-  width: var(--maxDotSize);
-  height: var(--maxDotSize);
-  border-radius: 100%;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:focus {
-    outline: none;
-  }
-`
-
-const Dot = styled.div`
-  width: var(--dotSize);
-  height: var(--dotSize);
-  border-radius: 100%;
-  background-color: var(--accent);
-  cursor: pointer;
 `
 
 const PriorityDotSection = styled.div`
@@ -232,14 +208,6 @@ const TaskActionsSection = styled.div`
   }
 `
 
-const PriorityDot = ({ prority, onClick }) => {
-  return (
-    <PriorityDotWrapper onClick={onClick}>
-      <Dot prority={prority} style={{ '--dotSize' : `calc(${prority}rem / var(--dotRatio))` }}/>
-    </PriorityDotWrapper>
-  )
-}
-
 const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisible, makeEditedPriority, setTasks, toggleRemoveFocus, setTooltipSeenTimes, tooltipSeenTimes }) => {
   const [titleEditorIsOpen, setTitleEditorIsOpen] = useState(false)
   const [priorityEditorIsOpen, setPriorityEditorIsOpen] = useState(false)
@@ -322,7 +290,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
 
           {!titleEditorIsOpen && !priorityEditorIsOpen && (
             <Title onClick={() => handleTitleClick()} isCompleted={task.completed}>
-              {task.title}
+              {task.dateAdded.toString()} — {task.title}
             </Title>
           )}
           
