@@ -6,7 +6,6 @@ import IconButton from './icon-button';
 import SvgCross from '../icons/cross';
 import SvgArrowDown from '../icons/arrow-down';
 import { keyframes } from 'emotion';
-import useLocalStorage from '../useLocalStorage';
 
 const ScrollPositioner = styled.div`
   width: 1px;

@@ -56,27 +56,27 @@ const Background = styled.div`
     transform-origin: center;
     animation: ${dotsIntro} 1s forwards cubic-bezier(0, 1, 1, 1);
 
-    &:nth-child(1) { transform: translate(20rem, 40rem) scale(1.2); animation-duration: 6s }
-    &:nth-child(2) { transform: translate(-26rem, 15rem) scale(1.2); animation-duration: 7s }
-    &:nth-child(3) { transform: translate(-22rem, 26rem) scale(1.2); animation-duration: 6s }
-    &:nth-child(4) { transform: translate(41rem, 11rem) scale(1.2); animation-duration: 9s }
-    &:nth-child(5) { transform: translate(-12rem, -16rem) scale(1.2); animation-duration: 6s }
-    &:nth-child(6) { transform: translate(10rem, 10rem) scale(1.2); animation-duration: 6s }
-    &:nth-child(7) { transform: translate(-26rem, 26rem) scale(1.2); animation-duration: 8s }
-    &:nth-child(8) { transform: translate(-16rem, -12rem) scale(1.2); animation-duration: 7s }
-    &:nth-child(9) { transform: translate(-13rem, 4rem) scale(1.2); animation-duration: 5s }
-    &:nth-child(10) { transform: translate(-33rem, -13rem) scale(1.2); animation-duration: 8.5s }
-    &:nth-child(11) { transform: translate(-10rem, -34rem) scale(1.2); animation-duration: 7.5s }
-    &:nth-child(12) { transform: translate(1rem, -21rem) scale(1.2); animation-duration: 11s }
-    &:nth-child(13) { transform: translate(18rem, -21rem) scale(1.2); animation-duration: 10s }
-    &:nth-child(14) { transform: translate(4rem, -18rem) scale(1.2); animation-duration: 15s }
-    &:nth-child(15) { transform: translate(2rem, -10rem) scale(1.2); animation-duration: 6.2s }
-    &:nth-child(16) { transform: translate(10rem, -4rem) scale(1.2); animation-duration: 6.4s }
-    &:nth-child(17) { transform: translate(14rem, 15rem) scale(1.2); animation-duration: 6s }
-    &:nth-child(18) { transform: translate(-8rem, -8rem) scale(1.2); animation-duration: 6s }
-    &:nth-child(19) { transform: translate(24rem, -14rem) scale(1.2); animation-duration: 6s }
-    &:nth-child(20) { transform: translate(-20rem, 5rem) scale(1.2); animation-duration: 14s }
-    &:nth-child(21) { transform: translate(15rem, -15rem) scale(1.2); animation-duration: 6s }
+    &:nth-of-type(1) { transform: translate(20rem, 40rem) scale(1.2); animation-duration: 6s }
+    &:nth-of-type(2) { transform: translate(-26rem, 15rem) scale(1.2); animation-duration: 7s }
+    &:nth-of-type(3) { transform: translate(-22rem, 26rem) scale(1.2); animation-duration: 6s }
+    &:nth-of-type(4) { transform: translate(41rem, 11rem) scale(1.2); animation-duration: 9s }
+    &:nth-of-type(5) { transform: translate(-12rem, -16rem) scale(1.2); animation-duration: 6s }
+    &:nth-of-type(6) { transform: translate(10rem, 10rem) scale(1.2); animation-duration: 6s }
+    &:nth-of-type(7) { transform: translate(-26rem, 26rem) scale(1.2); animation-duration: 8s }
+    &:nth-of-type(8) { transform: translate(-16rem, -12rem) scale(1.2); animation-duration: 7s }
+    &:nth-of-type(9) { transform: translate(-13rem, 4rem) scale(1.2); animation-duration: 5s }
+    &:nth-of-type(10) { transform: translate(-33rem, -13rem) scale(1.2); animation-duration: 8.5s }
+    &:nth-of-type(11) { transform: translate(-10rem, -34rem) scale(1.2); animation-duration: 7.5s }
+    &:nth-of-type(12) { transform: translate(1rem, -21rem) scale(1.2); animation-duration: 11s }
+    &:nth-of-type(13) { transform: translate(18rem, -21rem) scale(1.2); animation-duration: 10s }
+    &:nth-of-type(14) { transform: translate(4rem, -18rem) scale(1.2); animation-duration: 15s }
+    &:nth-of-type(15) { transform: translate(2rem, -10rem) scale(1.2); animation-duration: 6.2s }
+    &:nth-of-type(16) { transform: translate(10rem, -4rem) scale(1.2); animation-duration: 6.4s }
+    &:nth-of-type(17) { transform: translate(14rem, 15rem) scale(1.2); animation-duration: 6s }
+    &:nth-of-type(18) { transform: translate(-8rem, -8rem) scale(1.2); animation-duration: 6s }
+    &:nth-of-type(19) { transform: translate(24rem, -14rem) scale(1.2); animation-duration: 6s }
+    &:nth-of-type(20) { transform: translate(-20rem, 5rem) scale(1.2); animation-duration: 14s }
+    &:nth-of-type(21) { transform: translate(15rem, -15rem) scale(1.2); animation-duration: 6s }
   }
 `
 
