@@ -312,8 +312,6 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
             isVisible={titleEditorIsOpen || priorityEditorIsOpen}
             priorityEditorIsOpen={priorityEditorIsOpen} />
         )}
-
-        {console.log(tooltipSeenTimes)}
         
         <ScrollPositioner ref={scrollPositioner}/>
         
