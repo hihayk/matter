@@ -291,7 +291,7 @@ const PriorityDot = ({ prority, onClick }) => {
   )
 }
 
-const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisible, makeEditedPriority, setTasks, toggleRemoveFocus, setTooltipSeen, tooltipSeen }) => {
+const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisible, makeEditedPriority, setTasks, toggleRemoveFocus, setTooltipSeenTimes, tooltipSeenTimes }) => {
   const [titleEditorIsOpen, setTitleEditorIsOpen] = useState(false)
   const [priorityEditorIsOpen, setPriorityEditorIsOpen] = useState(false)
   const [priorityValue, setPriorityValue] = useState(task.prority)
@@ -310,8 +310,8 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
   const handleTitleClick = () => {
     setTitleEditorIsOpen(true)
     titleInput.current.select();
-    if(tooltipSeen < 2) {
-      setTooltipSeen(tooltipSeen + 1)
+    if(tooltipSeenTimes < 2) {
+      setTooltipSeenTimes(tooltipSeenTimes + 1)
     }
   }
   
@@ -356,7 +356,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
     <>
       <TaskWrapper editorIsOpen={editorIsOpen} isVisible={isVisible}>
         
-        {tooltipSeen < 2 && titleEditorIsOpen && !priorityEditorIsOpen && (
+        {tooltipSeenTimes < 2 && titleEditorIsOpen && !priorityEditorIsOpen && (
           <TutorialTooltip isVisible={titleEditorIsOpen && !priorityEditorIsOpen} />
         )}
         
