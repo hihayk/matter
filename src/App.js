@@ -55,7 +55,7 @@ const MainHeaderSideSection = styled.div`
   &.MainHeaderLeftSection {
     border-right: 1px solid var(--border);
     font-size: 1.2rem;
-    font-family: var(--sans);
+    font-family: var(--themeFont);
   }
   
   &.MainHeaderRightSection {
