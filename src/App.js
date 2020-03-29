@@ -7,39 +7,82 @@ import Task from './components/task'
 import Mousetrap from 'mousetrap'
 import Intro from './components/intro';
 import { exampleTasks } from './example-tasks';
+import AboutModal from './components/about-modal';
 
 const GlobalContainer = styled.div`
   .headerButtonsSpacer {
-    width: var(--pagePaddingX);
+    width: 0;
     height: 1rem;
     flex-shrink: 0;
+    
+    @media (max-width: 799px) {
+      width: var(--pagePaddingX);
+    }
   }
 `
 
 const MainHeader = styled.header`
+  --headerContentWidth: calc(var(--pageMaxWidth) - var(--pagePaddingX)*2);
+
   border-bottom: 1px solid var(--border);
   background-color: var(--background);
   position: sticky;
   top: 0;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--headerPaddingX);
 `
 
 const MainHeaderContent = styled.div`
-  max-width: 50rem;
-  padding: 2rem var(--pagePaddingX);
-  margin: 0 auto;
+  width: var(--headerContentWidth);
+  max-width: 100%;
+  padding: 2rem 0;
   display: flex;
   align-items: center;
   overflow: auto;
 
-  @media (max-width: 799px) {
-    padding: var(--pagePaddingX);
+  @media (max-width: 959px) {
+    padding: var(--pagePaddingX) 0 var(--pagePaddingX) var(--pagePaddingX);
+  }
+`
+
+const MainHeaderSideSection = styled.div`
+  padding: var(--pagePaddingX);
+  font-weight: 500;
+  
+  &.MainHeaderLeftSection {
+    border-right: 1px solid var(--border);
+    font-size: 1.2rem;
+    font-family: var(--sans);
+  }
+  
+  &.MainHeaderRightSection {
+    text-align: right;
+    border-left: 1px solid var(--border);
+  }
+
+  @media (max-width: 959px) {
+    &.MainHeaderLeftSection {
+      display: none;
+    }
+  }
+  
+  @media (min-width: 960px) {
+    &.MainHeaderLeftSection,
+    &.MainHeaderRightSection {
+      border: 0;
+    }
+
+    width: 100%;
+    max-width: calc((100vw - var(--headerContentWidth) - var(--headerPaddingX) * 2) / 2);
   }
 `
 
 const TaskListContainer = styled.ul`
-  max-width: 50rem;
-  padding: 1rem 1rem 8rem 1rem;
+  max-width: var(--pageMaxWidth);
+  padding: 1rem var(--pagePaddingX) 8rem var(--pagePaddingX);
   margin: 0 auto;
 `
 
@@ -111,6 +154,7 @@ function App() {
   const [monoOn, setMonofOn] = useLocalStorage('monoOn', false)
   const [smallTextOn, setSmallTextOn] = useLocalStorage('smallTextOn', false)
   const [tooltipSeenTimes, setTooltipSeenTimes] = useLocalStorage('tooltipSeenTimes', 0)
+  const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false)
   
   if(darkModeOn) {
     document.body.classList.add('dark')
@@ -245,7 +289,13 @@ function App() {
   return (
     <GlobalContainer>
       <Intro />
+      {aboutModalIsOpen && (
+        <AboutModal setAboutModalIsOpen={setAboutModalIsOpen} />
+      )}
       <MainHeader>
+        <MainHeaderSideSection className="MainHeaderLeftSection">
+          Matter.
+        </MainHeaderSideSection>
         <MainHeaderContent>
           <ToggleButtonGroup className="headerButtons">
             <ToggleButton
@@ -295,6 +345,13 @@ function App() {
 
           <div className="headerButtonsSpacer"/>
         </MainHeaderContent>
+        <MainHeaderSideSection
+          className="MainHeaderRightSection"
+        >
+          <ToggleButton onClick={() => setAboutModalIsOpen(true)}>
+            About
+          </ToggleButton>
+        </MainHeaderSideSection>
       </MainHeader>
       <TaskListContainer key={order}>
 

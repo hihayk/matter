@@ -27,8 +27,8 @@ const TaskWrapper = styled.li`
   ${props => props.editorIsOpen ? 'z-index: 11' : 'z-index: 0'};
   ${props => props.editorIsOpen && `
     box-shadow:
-    calc(50rem * -1 + 1rem*2) 0 var(--background),
-    calc(50rem - 1rem*2) 0 var(--background),
+    calc(var(--pageMaxWidth) * -1 + var(--pagePaddingX)*2) 0 var(--background),
+    calc(var(--pageMaxWidth) - var(--pagePaddingX)*2) 0 var(--background),
     2rem 0 var(--background),
     -2rem 0 var(--background);
   `};
@@ -187,10 +187,10 @@ const PrioritySlider = styled.input`
   }
 
   &:focus::-webkit-slider-thumb {
-    box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 0 4px var(--background);
+    box-shadow: inset 0 0 0 1px var(--accent), inset 0 0 0 4px var(--background);
   }
   &:focus::-moz-range-thumb {
-    box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 0 4px var(--background);
+    box-shadow: inset 0 0 0 1px var(--accent), inset 0 0 0 4px var(--background);
   }
 `
 
@@ -290,7 +290,7 @@ const Task = ({ task, titleInputOnChange, completeOnCLick, deleteOnCLick, isVisi
 
           {!titleEditorIsOpen && !priorityEditorIsOpen && (
             <Title onClick={() => handleTitleClick()} isCompleted={task.completed}>
-              {task.dateAdded.toString()} — {task.title}
+              {task.title}
             </Title>
           )}
           

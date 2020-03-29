@@ -11,6 +11,11 @@ const ToggleButton = styled.button`
   color: ${props => props.isAccent ? 'white' : 'inherit'};
   background-color: ${props => props.isAccent ? 'var(--accent)' : 'transparent'};
   border: 1px solid ${props => props.isAccent ? 'transparent' : 'var(--xDimmed)'};
+  ${props => props.isMinimal && 'border-color: transparent'};
+  
+  &:hover {
+    ${props => props.isMinimal && 'border-color: var(--xDimmed)'};
+  }
   
   &:focus {
     border-color: var(--accent);

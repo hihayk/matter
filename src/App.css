@@ -52,7 +52,9 @@
   --dotRatio: 2;
   --taskPaddingY: calc(var(--maxDotSize) + 0.5rem);
 
+  --pageMaxWidth: 50rem;
   --pagePaddingX: 1rem;
+  --headerPaddingX: 2rem;
 }
 
 body.dark {
@@ -89,6 +91,12 @@ body.smallText {
   }
 }
 
+@media (max-width: 960px) {
+  :root {
+    --headerPaddingX: 0;
+  }
+}
+
 ::selection {
   background-color: var(--selectionBackground);
   color: var(--selectionColor);
@@ -105,4 +113,26 @@ body {
 
 ul {
   list-style: none;
+}
+
+h1 {
+  font-size: var(--text-xl);
+}
+
+h2 {
+  font-size: var(--text-l);
+}
+
+h1, h2 {
+  font-family: var(--themeFont);
+  font-weight: normal;
+}
+
+a, a:visited {
+  color: inherit;
+}
+
+hr {
+  border-width: 0 0 1px 0;
+  border-color: var(--border);
 }
