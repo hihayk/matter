@@ -72,18 +72,18 @@ const AboutModal = ({ setAboutModalIsOpen }) => {
           </CloseSection>
           <h1>About Matter</h1>
           <p>
-            Matter is inspired by a physical notebook.
+            Less noise, more focus. Matter is a task manager that visually highlights what matters most to you.
           </p>
           <br />
           <h2>
-            no account needed
+            No account needed
           </h2>
           <p>
             Your tasks are stored in your browser (localStorage). Your data will persist untill your computer explodes or you delete your browser.
           </p>
           <br />
           <h2>
-            hidden feature
+            Hidden feature
           </h2>
           <p>
             Matter is voice activated. Say "Ok Matter, add task, walk my dog". If it doesn't work, try louder.
@@ -95,6 +95,9 @@ const AboutModal = ({ setAboutModalIsOpen }) => {
 
           <p>
             Made by <a href="https://hayk.design" target="_blank" rel="noopener noreferrer">Hayk</a>
+          </p>
+          <p>
+            <a href="https://github.com/hihayk/matter" target="_blank" rel="noopener noreferrer">Contact</a>
           </p>
           <p>
             <a href="https://github.com/hihayk/matter" target="_blank" rel="noopener noreferrer">Github</a>
