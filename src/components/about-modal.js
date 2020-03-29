@@ -97,7 +97,7 @@ const AboutModal = ({ setAboutModalIsOpen }) => {
             Made by <a href="https://hayk.design" target="_blank" rel="noopener noreferrer">Hayk</a>
           </p>
           <p>
-            <a href="https://github.com/hihayk/matter" target="_blank" rel="noopener noreferrer">Contact</a>
+            <a href="https://hayk.design/#/contact" target="_blank" rel="noopener noreferrer">Contact</a>
           </p>
           <p>
             <a href="https://github.com/hihayk/matter" target="_blank" rel="noopener noreferrer">Github</a>
