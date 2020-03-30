@@ -15,7 +15,7 @@ export const exampleTasks = [
   },
   {
     id: 3,
-    title: 'These are example tasks',
+    title: 'No account needed',
     prority: 4,
     completed: false,
     dateAdded: new Date('1/1/2020 00:04'),
