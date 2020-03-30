@@ -17,7 +17,7 @@ const tooltipIntro = keyframes`
 `
 
 const TooltipWrapper = styled.div`
-  background-color: white;
+  background-color: var(--background);
   position: absolute;
   bottom: calc(100% + 0.5rem);
   padding: 1rem;
