@@ -79,7 +79,7 @@ const AboutModal = ({ setAboutModalIsOpen }) => {
             No account needed
           </h2>
           <p>
-            Your tasks are stored in your browser (localStorage). Your data will persist untill your computer explodes or you delete your browser.
+            Your tasks are stored in your browser (localStorage). Your data will persist until your computer explodes or you delete your browser.
           </p>
           <br />
           <h2>
